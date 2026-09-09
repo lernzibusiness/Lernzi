@@ -1,4 +1,40 @@
 /* The study material, rather than decorative artwork, leads the workspace. */
+/* A cut-out brand mark sits directly on the navigation surface. */
+.brand .brand-symbol { background: transparent; border-radius: 0; overflow: visible; }
+.brand .brand-symbol img { object-fit: contain; opacity: .82; }
+
+/* Animate individual headings and controls, never text-bearing containers.
+   No delay, infinite motion or hidden resting state: reading stays immediate. */
+@media (prefers-reduced-motion: no-preference) {
+  .page-heading h1,
+  .auth-form-wrap h1,
+  .legal-page main > h1,
+  .study-result h2 {
+    animation: lernzi-heading-in 420ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .study-card > h2 {
+    animation: lernzi-heading-in 280ms ease-out both;
+  }
+  .self-mark > .actions,
+  .modal[open] h2 {
+    animation: lernzi-controls-in 200ms ease-out both;
+  }
+  .study-result > .empty-symbol {
+    animation: lernzi-complete-in 280ms ease-out both;
+  }
+}
+@keyframes lernzi-heading-in {
+  from { opacity: .25; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes lernzi-controls-in {
+  from { opacity: .4; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes lernzi-complete-in {
+  from { opacity: .4; transform: scale(.96); }
+  to { opacity: 1; transform: scale(1); }
+}
 [hidden] { display: none !important; }
 .page-heading h1 { font-size: clamp(2rem, 3vw, 2.8rem); line-height: 1.18; }
 .page-heading { margin-bottom: 34px; }

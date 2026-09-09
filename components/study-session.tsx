@@ -251,7 +251,7 @@ export default function StudySession({
         <span className="eyebrow">
           {revealed ? "CHECK YOUR ANSWER" : "QUESTION"}
         </span>
-        <h2>{card.question}</h2>
+        <h2 key={card.id}>{card.question}</h2>
         {!flash && !revealed && (
           <label className="answer-input">
             Your answer
