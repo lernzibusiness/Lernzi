@@ -1,7 +1,9 @@
 import Lernzi from "@/components/lernzi";
 import { notFound } from "next/navigation";
 const routes: Record<string, string> = {
-  "": "Overview",
+  "": "Learn smarter, stress less",
+  dashboard: "Dashboard",
+  settings: "Settings",
   materials: "Study materials",
   upload: "Add material",
   flashcards: "Flashcards",

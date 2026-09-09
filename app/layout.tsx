@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import "@fontsource-variable/inter";
 import "./globals.css";
 import "./refinements.css";
+import "./light.css";
 export const metadata: Metadata = {
   title: "Lernzi · Make room for learning",
   description:

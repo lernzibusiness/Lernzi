@@ -30,6 +30,7 @@ import {
   X,
 } from "lucide-react";
 import Brand from "./brand";
+import Landing from "./landing";
 import { PageHeading } from "./page-heading";
 import Upload from "./upload";
 import StudySession from "./study-session";
@@ -50,12 +51,12 @@ import {
 import { readStudy, saveStudy } from "@/lib/storage";
 
 const navigation = [
-  { href: "/", label: "Overview", icon: LayoutDashboard },
-  { href: "/materials", label: "Study materials", icon: FolderOpen },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/materials", label: "My Materials", icon: FolderOpen },
   { href: "/flashcards", label: "Flashcards", icon: Layers3 },
-  { href: "/self-test", label: "Self-Test", icon: Target },
-  { href: "/quiz", label: "15-Minute Quiz", icon: Clock3 },
-  { href: "/progress", label: "My progress", icon: TrendingUp },
+  { href: "/self-test", label: "Self-Tests", icon: Target },
+  { href: "/quiz", label: "Quizzes", icon: Clock3 },
+  { href: "/progress", label: "Progress", icon: TrendingUp },
 ];
 const modes = [
   {
@@ -155,7 +156,7 @@ export default function Lernzi() {
     }
   }
   const material =
-    state.materials.find((m) => m.id === selected) || state.materials[0];
+    state.materials.find((m) => m.id === (path === "/dashboard" ? state.results.at(-1)?.materialId || selected : selected)) || state.materials[0];
   const completed = state.results.reduce((s, r) => s + r.total, 0);
   function exportData() {
     const blob = new Blob([JSON.stringify(state, null, 2)], {
@@ -175,7 +176,7 @@ export default function Lernzi() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      {auth ? (
+      {path === "/" ? <Landing /> : auth ? (
         <Auth path={path} />
       ) : legal ? (
         <Legal path={path} />
@@ -214,7 +215,7 @@ export default function Lernzi() {
                 </Link>
               ))}
             </nav>
-            <div className="sidebar-bottom">
+            <div className="sidebar-bottom"><Link href="/settings" className="nav-link">Settings</Link><button className="nav-link" disabled title="No account is signed in">Log out · unavailable</button>
               <div className="local-note">
                 <ShieldCheck size={20} />
                 <div>
@@ -298,143 +299,16 @@ export default function Lernzi() {
                   <span className="eyebrow">YOUR STUDY SPACE</span>
                   <h1>Getting things ready…</h1>
                 </div>
-              ) : path === "/" ? (
+              ) : path === "/dashboard" ? (
                 <>
-                  <div className="page-heading">
-                    <div>
-                      <span className="eyebrow">YOUR WORKSPACE</span>
-                      <h1>What are we studying?</h1>
-                      <p>Pick up your notes or start with something new.</p>
-                    </div>
-                  </div>
-                  <section className="focus-card">
-                    <div className="focus-copy">
-                      <span className="pill mint">
-                        <span className="tiny-dot" />
-                        {material ? "CURRENT MATERIAL" : "START YOUR LIBRARY"}
-                      </span>
-                      <h2>
-                        {material
-                          ? material.title
-                          : "Your notes, ready to study."}
-                      </h2>
-                      <p>
-                        {material
-                          ? `${material.cards.length} cards in this set. Choose a study mode and work through them at your own pace.`
-                          : "Add a set of notes, then practise with flashcards, a self-test or a 15-minute quiz."}
-                      </p>
-                      <div className="actions">
-                        <Link
-                          className="button primary"
-                          href={material ? `/flashcards?material=${encodeURIComponent(material.id)}` : "/upload"}
-                        >
-                          {material
-                            ? "Continue studying"
-                            : "Add your first material"}
-                          <ArrowRight size={18} />
-                        </Link>
-                        {!material && (
-                          <button className="text-button" onClick={demo}>
-                            Try a sample <ArrowUpRight size={16} />
-                          </button>
-                        )}
-                      </div>
-                      <span className="focus-footnote">
-                        <ShieldCheck size={15} />
-                        {material
-                          ? `${material.cards.length} cards · saved in this browser`
-                          : "Private by default. No account needed to explore."}
-                      </span>
-                    </div>
-                    <div className="material-preview">
-                      <span className="preview-heading"><FileText size={16}/>{material ? 'FROM YOUR NOTES' : 'HOW IT WORKS'}</span>
-                      {material ? <><strong>{material.cards[0]?.question || material.title}</strong><span className="preview-bottom">{material.sample ? 'Sample set' : 'Your material'} <span>{material.cards.length} cards</span></span></> : <ol><li><span>01</span> Add your material</li><li><span>02</span> Review your card pairs</li><li><span>03</span> Choose how to practise</li></ol>}
-                    </div>
-                  </section>
-                  <section className="section">
-                    <div className="section-heading">
-                      <h2>Choose a study mode</h2>
-                      <span>Use your own material</span>
-                    </div>
-                    <div className="mode-grid">
-                      {modes.map((m, i) => (
-                        <Link
-                          key={m.href}
-                          href={material ? `${m.href}?material=${encodeURIComponent(material.id)}` : m.href}
-                          className={`mode-card mode-${i}`}
-                        >
-                          <span className="mode-icon">
-                            <m.icon size={24} />
-                          </span>
-                          <h3>{m.label}</h3>
-                          <p>{m.description}</p>
-                          <ArrowUpRight className="mode-arrow" size={19} />
-                        </Link>
-                      ))}
-                    </div>
-                  </section>
-                  <section className="section">
-                    <div className="section-heading">
-                      <h2>Recent material</h2>
-                      <Link href="/materials">
-                        View all <ArrowRight size={15} />
-                      </Link>
-                    </div>
-                    {state.materials.length ? (
-                      <div className="material-list">
-                        {state.materials.slice(0, 2).map((m) => (
-                          <button
-                            key={m.id}
-                            className="material-row"
-                            onClick={() => {
-                              setSelected(m.id);
-                              router.push("/materials");
-                            }}
-                          >
-                            <span className="file-icon">
-                              <FileText />
-                            </span>
-                            <div>
-                              <strong>{m.title}</strong>
-                              <small>
-                                {m.sample ? "Sample material · " : ""}
-                                {m.cards.length} cards ·{" "}
-                                {new Date(m.createdAt).toLocaleDateString(
-                                  "en-GB",
-                                  { day: "numeric", month: "short" },
-                                )}
-                              </small>
-                            </div>
-                            <ChevronRight size={19} />
-                          </button>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="shelf-empty">
-                        <span className="file-icon">
-                          <FolderOpen size={25} />
-                        </span>
-                        <div>
-                          <h3>Your notes will appear here.</h3>
-                          <p>Your notes and study sets will be right here.</p>
-                        </div>
-                        <Link className="text-button" href="/upload">
-                          Add material <Plus size={17} />
-                        </Link>
-                      </div>
-                    )}
-                  </section>
-                  <div className="quiet-footer">
-                    <span>
-                      <Leaf size={16} /> Your local study library
-                    </span>
-                    <span>
-                      {completed
-                        ? `${completed} cards practised so far.`
-                        : "Saved in this browser."}
-                    </span>
-                  </div>
+                  <PageHeading eyebrow="YOUR WORKSPACE" title="Welcome back!" text="Ready to keep learning?" />
+                  <section className="upload-focus"><div><span className="eyebrow">UPLOAD NEW MATERIAL</span><h2>Start with your notes.</h2><p>Turn your notes into flashcards, self-tests and more.</p></div><Link href="/upload" className="button primary"><UploadCloud size={20}/> Upload material</Link></section>
+                  <section className="section"><div className="section-heading"><h2>Continue studying</h2>{state.materials.length>1 && <Link href="/materials">See all <ArrowRight size={16}/></Link>}</div>
+                  {material ? <div className="continue-card"><span className="file-icon"><FileText/></span><div><h3>{material.title}</h3><p>{material.cards.length} cards{material.sample ? " · Sample material" : ""}</p>{(()=>{const last=[...state.results].reverse().find(r=>r.materialId===material.id);return last ? <small>Last studied {new Date(last.date).toLocaleDateString("en-GB")} · {last.correct}/{last.total} self-marked correct</small> : <small>Ready for your first session</small>;})()}</div><Link href={`/flashcards?material=${encodeURIComponent(material.id)}`} className="button secondary">Continue <ArrowRight size={18}/></Link></div> : <div className="shelf-empty"><FolderOpen/><div><h3>Your study space starts here.</h3><p>Add your notes above, or explore a sample set.</p></div><button className="text-button" onClick={demo}>Try a sample <ArrowRight size={16}/></button></div>}</section>
+                  <section className="section"><div className="section-heading"><h2>Your study tools</h2></div><div className="mode-grid">{[...modes,{href:"/progress",label:"Progress",description:"See your practice over time.",icon:TrendingUp}].map(m=><Link className="mode-card" key={m.href} href={material && m.href!=="/progress" ? `${m.href}?material=${encodeURIComponent(material.id)}` : m.href}><span className="mode-icon"><m.icon size={24}/></span><h3>{m.label}</h3><p>{m.description}</p><ArrowRight className="mode-arrow" size={18}/></Link>)}</div></section>
                 </>
+              ) : path === "/settings" ? (
+                <><PageHeading eyebrow="YOUR WORKSPACE" title="Settings" text="Your data and preferences, in one place."/><section className="panel settings-panel"><h2>On this device</h2><p>Your study library is saved in this browser. Export a copy to keep it safe.</p><button className="button secondary" onClick={exportData}><ArrowDownToLine size={18}/> Export study data</button><h2>Privacy preferences</h2><p>Review your optional cookie choices at any time.</p><button className="button secondary" onClick={()=>window.dispatchEvent(new Event("lernzi:cookies"))}>Cookie preferences</button><h2>Account</h2><p>Cloud accounts are not connected yet. You are not signed in, so there is no account to log out of.</p><Link href="/login" className="text-button">View account preview <ArrowRight size={16}/></Link></section></>
               ) : path === "/materials" ? (
                 <>
                   <PageHeading

@@ -191,7 +191,7 @@ export default function Auth({ path }: { path: string }) {
               </>
             )}
           </p>
-          <Link href="/" className="button secondary full-width">
+          <Link href="/dashboard" className="button secondary full-width">
             Explore without an account <ArrowRight size={18} />
           </Link>
         </div>

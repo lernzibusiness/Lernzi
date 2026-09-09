@@ -34,6 +34,10 @@ export default function StudySession({
   const lock = useRef(false);
   const quiz = mode === "/quiz";
   const flash = mode === "/flashcards";
+  const flashcardButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (flash && started && !finished) flashcardButton.current?.focus();
+  }, [flash, started, finished, index]);
   useEffect(() => {
     if (!started || !quiz || finished) return;
     const tick = () => setSeconds(remainingSeconds(start.current, Date.now()));
@@ -247,7 +251,12 @@ export default function StudySession({
           Time’s up. Finish this card; no new question will start.
         </p>
       )}
-      <div className="study-card">
+      {flash ? <button ref={flashcardButton} key={card.id} type="button" className={`flashcard ${revealed ? "is-flipped" : ""}`} onClick={()=>setRevealed(v=>!v)} aria-pressed={revealed} aria-label={revealed ? "Answer: " + card.answer + ". Flip to question." : "Question: " + card.question + ". Flip to answer."}>
+        <span className="flashcard-inner">
+          <span className="flashcard-face flashcard-front" aria-hidden={revealed}><span className="eyebrow">QUESTION</span><span className="flashcard-text">{card.question}</span><span className="flashcard-hint">Click, tap or press Enter / Space to flip</span></span>
+          <span className="flashcard-face flashcard-back" aria-hidden={!revealed}><span className="eyebrow">ANSWER</span><span className="flashcard-text">{card.answer}</span><span className="flashcard-hint">Flip back to the question</span></span>
+        </span>
+      </button> : <div className="study-card">
         <span className="eyebrow">
           {revealed ? "CHECK YOUR ANSWER" : "QUESTION"}
         </span>
@@ -278,7 +287,7 @@ export default function StudySession({
             Reveal answer <ArrowRight size={17} />
           </button>
         )}
-      </div>
+      </div>}
       {revealed && (
         <div className="self-mark">
           <p>
