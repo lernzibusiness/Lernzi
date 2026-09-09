@@ -458,133 +458,6 @@ button:hover:not(:disabled) {
 .page-heading.compact h1 {
   font-size: clamp(2rem, 3vw, 2.8rem);
 }
-.focus-card {
-  position: relative;
-  overflow: hidden;
-  min-height: 316px;
-  border-radius: var(--radius);
-  border: 1px solid #94A3B8;
-  background: linear-gradient(135deg, #E2E8F0, #F8FAFC);
-  display: flex;
-  padding: 34px 37px;
-}
-.focus-copy {
-  position: relative;
-  z-index: 2;
-  max-width: 56%;
-}
-.focus-copy h2 {
-  font-size: 2rem;
-  line-height: 1.2;
-  max-width: 320px;
-  margin: 21px 0 14px;
-}
-.focus-copy p {
-  max-width: 340px;
-  font-size: 0.875rem;
-  color: var(--text);
-}
-.focus-copy .actions {
-  margin-top: 24px;
-  gap: 22px;
-}
-.focus-copy .button {
-  font-size: 0.8125rem;
-  padding: 12px 17px;
-  min-height: 44px;
-}
-.focus-copy .text-button {
-  font-size: 0.75rem;
-}
-.focus-footnote {
-  display: flex;
-  gap: 7px;
-  align-items: center;
-  font-size: 0.625rem;
-  color: var(--text);
-  margin-top: 22px;
-}
-.focus-visual {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 44%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-}
-.orbit {
-  position: absolute;
-  width: 330px;
-  height: 330px;
-  border: 1px solid #94A3B8;
-  border-radius: 50%;
-  transform: rotate(-35deg) scaleX(1.12);
-}
-.orbit-two {
-  width: 450px;
-  height: 450px;
-}
-.floating-card {
-  position: absolute;
-  width: 191px;
-  height: 240px;
-  border-radius: 14px;
-}
-.back-card {
-  background: linear-gradient(135deg, #E2E8F0, #F8FAFC);
-  border: 1px solid #94A3B8;
-  transform: rotate(-14deg) translate(-19px, -1px);
-}
-.front-card {
-  background: linear-gradient(135deg, #E2E8F0, #F8FAFC);
-  box-shadow: 0 30px 40px #001f2360;
-  transform: rotate(10deg) translate(12px, 2px);
-  padding: 20px;
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-}
-.mini-brand {
-  font-weight: 700;
-  font-size: 0.9375rem;
-  letter-spacing: -0.05em;
-}
-.visual-card-label {
-  font-size: 0.5rem;
-  letter-spacing: 0.16em;
-  margin: 30px 0 13px;
-  color: var(--text);
-}
-.front-card strong {
-  font-weight: 500;
-  font-size: 1.55rem;
-  line-height: 1.15;
-  letter-spacing: -0.04em;
-}
-.visual-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid #224b3825;
-  margin-top: auto;
-  padding-top: 13px;
-  font-size: 0.5rem;
-}
-.spark {
-  position: absolute;
-  color: var(--text);
-}
-.spark-one {
-  font-size: 32px;
-  right: 48px;
-  top: 50px;
-}
-.spark-two {
-  font-size: 18px;
-  left: 35px;
-  bottom: 52px;
-}
 .section {
   margin-top: 33px;
 }
@@ -1552,23 +1425,6 @@ progress::-webkit-progress-value {
   .main-content {
     padding-top: 54px;
   }
-  .focus-card {
-    min-height: 345px;
-  }
-  .focus-copy h2 {
-    max-width: 380px;
-    font-size: 2.3rem;
-  }
-  .floating-card {
-    width: 215px;
-    height: 262px;
-  }
-  .focus-visual {
-    right: 25px;
-  }
-  .front-card strong {
-    font-size: 1.8rem;
-  }
 }
 @media (max-width: 1150px) {
   .sidebar {
@@ -1584,38 +1440,6 @@ progress::-webkit-progress-value {
   }
   .topbar {
     padding: 0 30px;
-  }
-  .focus-card {
-    padding: 30px;
-  }
-  .focus-copy {
-    max-width: 60%;
-  }
-  .focus-copy h2 {
-    font-size: 1.75rem;
-  }
-  .floating-card {
-    width: 155px;
-    height: 213px;
-  }
-  .front-card {
-    padding: 16px;
-  }
-  .front-card strong {
-    font-size: 1.25rem;
-  }
-  .visual-card-label {
-    margin-top: 25px;
-  }
-  .focus-visual {
-    width: 36%;
-    right: 12px;
-  }
-  .spark-one {
-    right: 7px;
-  }
-  .spark-two {
-    left: 5px;
   }
   .cookie-banner {
     left: 228px;
@@ -1703,18 +1527,6 @@ progress::-webkit-progress-value {
   }
   .page-heading h1 {
     font-size: 2.75rem;
-  }
-  .focus-visual {
-    width: 40%;
-  }
-  .focus-copy {
-    max-width: 56%;
-  }
-  .focus-card {
-    min-height: 315px;
-  }
-  .focus-copy p {
-    font-size: 0.8125rem;
   }
   .cookie-banner {
     left: 16px;
@@ -1807,39 +1619,6 @@ progress::-webkit-progress-value {
   }
   .heading-mark {
     display: none;
-  }
-  .focus-card {
-    padding: 25px;
-    min-height: 0;
-    display: block;
-  }
-  .focus-copy {
-    max-width: none;
-  }
-  .focus-copy h2 {
-    font-size: 1.75rem;
-    max-width: 230px;
-    margin: 20px 0 14px;
-  }
-  .focus-copy p {
-    max-width: 260px;
-  }
-  .focus-visual {
-    display: none;
-  }
-  .focus-copy .actions {
-    gap: 15px;
-    margin-top: 23px;
-  }
-  .focus-copy .button {
-    font-size: 0.8125rem;
-  }
-  .focus-copy .text-button {
-    font-size: 0.6875rem;
-  }
-  .focus-footnote {
-    font-size: 0.625rem;
-    line-height: 1.6;
   }
   .section {
     margin-top: 29px;
@@ -2154,18 +1933,10 @@ progress::-webkit-progress-value {
 .shelf-empty p {
   font-size: 0.875rem;
 }
-.focus-copy p {
-  font-size: 1rem;
-}
-.focus-footnote,
 .quiet-footer,
 .page-footer,
 .sidebar-legal {
   font-size: 0.75rem;
-}
-.focus-copy .button,
-.focus-copy .text-button {
-  font-size: 0.875rem;
 }
 .brand-symbol img {
   mix-blend-mode: normal;
@@ -2204,15 +1975,6 @@ progress::-webkit-progress-value {
   }
 }
 @media (max-width: 540px) {
-  .focus-copy p {
-    font-size: 0.9375rem;
-  }
-  .focus-copy .text-button {
-    font-size: 0.8125rem;
-  }
-  .focus-footnote {
-    font-size: 0.6875rem;
-  }
   .section-heading > span:not(.pill):not(.file-icon) {
     font-size: 0.75rem;
   }

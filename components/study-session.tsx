@@ -71,7 +71,7 @@ export default function StudySession({
         const success = onComplete({
           id: crypto.randomUUID(),
           materialId: material.id,
-          mode: flash ? "Flashcards" : quiz ? "15-Minute Quiz" : "Self-Test",
+          mode: flash ? "Flashcards" : quiz ? "15-Min Quiz" : "Self-Test",
           correct: score,
           total,
           date: new Date().toISOString(),
@@ -208,7 +208,7 @@ export default function StudySession({
             </label>
           )}
           <button className="button primary" onClick={begin}>
-            Start {quiz ? "15-Minute Quiz" : flash ? "flashcards" : "Self-Test"}
+            Start {quiz ? "15-Min Quiz" : flash ? "flashcards" : "Self-Test"}
             <ArrowRight size={18} />
           </button>
           <p className="subtle">

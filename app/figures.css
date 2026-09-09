@@ -1,0 +1,37 @@
+/* Sculpted feature figures, using only the Lernzi palette. */
+.feature-figure { display:grid; place-items:center; height:180px; width:100%; perspective:700px; position:relative; isolation:isolate; }
+.feature-figure::after { content:""; position:absolute; width:110px; height:18px; bottom:8px; border-radius:50%; background:radial-gradient(ellipse,#0F172A26,transparent 70%); }
+.figure-object { display:block; position:relative; width:140px; height:140px; transform:rotateX(12deg) rotateY(-18deg) rotateZ(-7deg); transform-style:preserve-3d; }
+.figure-sheet { position:absolute; inset:4px 22px 4px 16px; border-radius:12px 24px 12px 12px; background:linear-gradient(135deg,#F8FAFC,#E2E8F0); border:1px solid #94A3B8; box-shadow:2px 2px #94A3B8,4px 4px #94A3B8,6px 6px #1E3A8A; padding:28px 16px; display:flex; flex-direction:column; gap:13px; }
+.figure-sheet>i { display:block; height:6px; background:#94A3B8; border-radius:6px; }
+.figure-sheet>i:last-child { width:65%; }
+.figure-badge { position:absolute; right:0; bottom:2px; display:grid; place-items:center; width:60px; height:60px; border-radius:18px; color:#0F172A; background:linear-gradient(140deg,#06B6D4,#10B981); box-shadow:2px 2px #1E3A8A,4px 4px #1E3A8A; transform:translateZ(22px); }
+.figure-card { position:absolute; width:108px; height:118px; border-radius:14px; border:1px solid #1E3A8A; box-shadow:2px 3px #1E3A8A; }
+.card-bottom { background:#3B82F6; left:5px; top:18px; transform:rotateZ(-12deg); }
+.card-middle { background:#06B6D4; left:18px; top:12px; transform:translateZ(8px) rotateZ(5deg); }
+.card-top { background:linear-gradient(135deg,#F8FAFC,#E2E8F0); left:26px; top:5px; transform:translateZ(16px) rotateZ(12deg); display:flex; flex-direction:column; gap:16px; align-items:center; justify-content:center; color:#1E3A8A; }
+.card-top i { width:42px; height:5px; border-radius:4px; background:#06B6D4; }
+.checklist { padding:23px 12px; gap:15px; }
+.checklist>span { display:flex; align-items:center; gap:9px; color:#10B981; }
+.checklist i { width:36px; height:5px; border-radius:4px; background:#94A3B8; }
+.empty-check { width:18px; height:18px; border:2px solid #3B82F6; border-radius:4px; }
+.timer-crown { position:absolute; top:0; left:58px; width:27px; height:17px; border-radius:5px; background:#1E3A8A; box-shadow:3px 2px #0F172A; }
+.figure-clock { position:absolute; inset:15px 9px 4px; padding:10px; border-radius:50%; background:linear-gradient(140deg,#3B82F6,#06B6D4); box-shadow:2px 2px #1E3A8A,4px 4px #1E3A8A,6px 6px #1E3A8A; }
+.clock-dial { display:grid; place-items:center; height:100%; border-radius:50%; background:#F8FAFC; border:3px solid #E2E8F0; position:relative; }
+.clock-dial strong { font-size:32px; color:#1E3A8A; font-variant-numeric:tabular-nums; }
+.clock-hand { position:absolute; width:3px; height:14px; background:#10B981; top:5px; left:calc(50% - 1px); border-radius:3px; }
+.figure-chart { position:absolute; inset:8px; border-bottom:8px solid #1E3A8A; border-radius:5px; display:flex; align-items:flex-end; justify-content:center; gap:12px; padding:0 6px; }
+.figure-chart>i { width:27px; height:42px; border-radius:6px 6px 0 0; background:#3B82F6; box-shadow:4px 3px #1E3A8A; }
+.figure-chart>i:nth-child(2) { height:72px; background:#06B6D4; }
+.figure-chart>i:nth-child(3) { height:105px; background:#10B981; }
+.chart-check { position:absolute; top:-10px; right:-8px; width:36px; height:36px; border-radius:50%; background:#F8FAFC; color:#1E3A8A; border:1px solid #94A3B8; display:grid; place-items:center; transform:translateZ(16px); }
+.landing-tools .mode-card { gap:14px; }
+.landing-tools .mode-card:hover { transform:none; }
+@media(prefers-reduced-motion:no-preference) {
+  .figure-object { animation:figure-arrive 550ms ease-out; transition:transform 350ms ease-out; }
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .landing-tools a:hover .figure-object,.landing-tools a:focus-visible .figure-object { transform:translateY(-5px) rotateX(8deg) rotateY(-10deg) rotateZ(-3deg); }
+}
+@keyframes figure-arrive { from { opacity:.5; transform:translateY(5px) rotateX(12deg) rotateY(-18deg) rotateZ(-7deg); } to { opacity:1; transform:rotateX(12deg) rotateY(-18deg) rotateZ(-7deg); } }
+@media(max-width:650px) { .feature-figure { height:155px; } .figure-object { scale:.9; } }

@@ -4,13 +4,10 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowDownToLine,
-  ArrowLeft,
   ArrowRight,
-  ArrowUpRight,
   BookOpen,
   Check,
   ChevronRight,
-  CircleHelp,
   Clock3,
   FileText,
   FolderOpen,
@@ -22,7 +19,6 @@ import {
   Plus,
   Search,
   ShieldCheck,
-  Sparkles,
   Target,
   Trash2,
   TrendingUp,
@@ -39,13 +35,8 @@ import Auth from "./auth";
 import Legal from "./legal";
 import {
   emptyState,
-  parseCards,
-  remainingSeconds,
   sampleMaterial,
-  shuffle,
-  type Card,
   type Material,
-  type Result,
   type StudyState,
 } from "@/lib/study";
 import { readStudy, saveStudy } from "@/lib/storage";
@@ -55,7 +46,7 @@ const navigation = [
   { href: "/materials", label: "My Materials", icon: FolderOpen },
   { href: "/flashcards", label: "Flashcards", icon: Layers3 },
   { href: "/self-test", label: "Self-Tests", icon: Target },
-  { href: "/quiz", label: "Quizzes", icon: Clock3 },
+  { href: "/quiz", label: "15-Min Quiz", icon: Clock3 },
   { href: "/progress", label: "Progress", icon: TrendingUp },
 ];
 const modes = [
@@ -73,7 +64,7 @@ const modes = [
   },
   {
     href: "/quiz",
-    label: "15-Minute Quiz",
+    label: "15-Min Quiz",
     description: "A timed mix of your cards.",
     icon: Clock3,
   },
@@ -428,7 +419,7 @@ export default function Lernzi() {
                         ? "Flashcards"
                         : path === "/self-test"
                           ? "Self-Test"
-                          : "15-Minute Quiz"
+                          : "15-Min Quiz"
                     }
                     text={
                       path === "/flashcards"
@@ -557,7 +548,7 @@ export default function Lernzi() {
                                   )?.title || "Study session"}
                                 </strong>
                                 <small>
-                                  {r.mode} ·{" "}
+                                  {r.mode === "15-Minute Quiz" || r.mode === "Quizzes" ? "15-Min Quiz" : r.mode} ·{" "}
                                   {new Date(r.date).toLocaleDateString("en-GB")}
                                 </small>
                               </div>
