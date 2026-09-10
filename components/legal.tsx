@@ -136,8 +136,8 @@ const terms: Section[] = [
   {
     title: "4. Storage and backups",
     paragraphs: [
-      "Study data is stored in the current browser on this device. It is not automatically synchronised. Browser clearing, storage eviction, private browsing or device loss can remove it. Keep an export of important work. Original uploaded text files are not retained; extracted text and card pairs are.",
-      "The first-stage limits are 20 materials, 10 MB per text file, 500,000 characters per material and 300 cards per material. Larger inputs are rejected with an explanation. These are local product limits, not paid entitlements.",
+      "Study data is stored in the current browser on this device. It is not automatically synchronised. Browser clearing, storage eviction, private browsing or device loss can remove it. Keep an export of important work. Original imported files are not retained; extracted text and card pairs are.",
+      "The first-stage limits are 20 materials, 10 MB per imported file, 500,000 characters per material and 300 cards per material. Larger inputs are rejected with an explanation. These are local product limits, not paid entitlements.",
     ],
   },
   {

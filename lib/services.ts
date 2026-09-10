@@ -3,7 +3,7 @@ export const capabilities = {
   accounts: false,
   cloudStorage: false,
   payments: false,
-  pdfExtraction: false,
+  pdfExtraction: true,
 } as const;
 export interface AccountProvider {
   signIn(email: string, password: string): Promise<void>;

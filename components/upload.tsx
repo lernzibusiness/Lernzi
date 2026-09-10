@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { ArrowRight, UploadCloud, Sparkles, ShieldCheck } from "lucide-react";
 import { parseCards, type Material } from "@/lib/study";
 import { PageHeading } from "./page-heading";
+import { readStudyFile } from "@/lib/read-study-file";
 export default function Upload({
   onAdd,
   disabled,
@@ -16,32 +17,17 @@ export default function Upload({
   const [busy, setBusy] = useState(false);
   const [drag, setDrag] = useState(false);
   const input = useRef<HTMLInputElement>(null);
+  const reading = useRef(false);
   const cards = parseCards(text);
   async function read(file?: File) {
-    if (!file) return;
+    if (!file || reading.current || disabled) return;
+    reading.current = true;
     setError("");
-    if (!/\.(txt|md)$/i.test(file.name)) {
-      setError(
-        "This first version reads TXT and Markdown. PDF and Word processing will be added later. No file was uploaded.",
-      );
-      return;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      setError("Choose a file smaller than 10 MB.");
-      return;
-    }
     setBusy(true);
     try {
-      const bytes = await file.arrayBuffer();
-      const content = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
-      if (content.length > 500000)
-        throw new Error(
-          "This file contains more than 500,000 characters. Please split it into smaller files.",
-        );
-      if (!content.trim())
-        throw new Error("This file is empty. Choose notes with text.");
+      const content = await readStudyFile(file);
       setText(content);
-      setTitle(file.name.replace(/\.[^.]+$/, ""));
+      setTitle(file.name.replace(/\.[^.]+$/, "").slice(0, 100));
     } catch (e) {
       setError(
         e instanceof Error
@@ -49,11 +35,14 @@ export default function Upload({
           : "We couldn’t read that file. Try UTF-8 text.",
       );
     } finally {
+      reading.current = false;
       setBusy(false);
+      if (input.current) input.current.value = "";
     }
   }
   function submit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (reading.current || disabled) return;
     if (!title.trim()) { setError('Give your material a title.'); return; }
     if (!text.trim()) {
       setError("Add some notes first.");
@@ -80,25 +69,27 @@ export default function Upload({
       <PageHeading
         eyebrow="A PLACE FOR YOUR IDEAS"
         title="Add study material"
-        text="Upload a text file or paste your notes below."
+        text="Upload a PDF or text file, or paste your notes below."
       />
       <form onSubmit={submit} className="upload-layout">
         <section className="panel">
           <div
             role="button"
-            tabIndex={0}
-            aria-label="Choose a text or Markdown file"
+            tabIndex={busy || disabled ? -1 : 0}
+            aria-disabled={busy || disabled}
+            aria-busy={busy}
+            aria-label="Choose a PDF, text or Markdown file"
             className={`dropzone ${drag ? "dragging" : ""}`}
-            onClick={() => input.current?.click()}
+            onClick={() => { if (!reading.current && !disabled) input.current?.click(); }}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                input.current?.click();
+                if (!reading.current && !disabled) input.current?.click();
               }
             }}
             onDragOver={(e) => {
               e.preventDefault();
-              setDrag(true);
+              if (!reading.current && !disabled) setDrag(true);
             }}
             onDragLeave={() => setDrag(false)}
             onDrop={(e) => {
@@ -114,12 +105,13 @@ export default function Upload({
             <p>
               or <span className="accent">browse files</span>
             </p>
-            <small>TXT or Markdown · Up to 10 MB</small>
+            <small>PDF, TXT or Markdown · Up to 10 MB</small>
           </div>
           <input
             ref={input}
             type="file"
-            accept=".txt,.md,text/plain,text/markdown"
+            accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown"
+            disabled={busy || disabled}
             hidden
             onChange={(e) => void read(e.target.files?.[0])}
           />
@@ -129,6 +121,7 @@ export default function Upload({
           <label>
             Material title
             <input
+              disabled={busy}
               required
               maxLength={100}
               value={title}
@@ -139,6 +132,7 @@ export default function Upload({
           <label>
             Your notes
             <textarea
+              disabled={busy}
               required
               rows={8}
               value={text}
@@ -185,8 +179,9 @@ export default function Upload({
             <span>::</span> The basic unit of life.
           </div>
           <p>
-            Plain notes are saved as notes. Automatic question generation, PDF
-            and Word reading are coming later.
+            PDF text is extracted on your device. Scanned PDFs need selectable
+            text first. Plain notes are saved as notes; automatic question
+            generation and Word reading are coming later.
           </p>
           <div className="aside-privacy">
             <ShieldCheck size={22} />
