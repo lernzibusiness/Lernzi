@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { termQuiz } from "@/lib/terms";
 import { ArrowRight, Check, Clock3, Layers3, Target, Plus } from "lucide-react";
 import {
   shuffle,
@@ -47,7 +48,7 @@ export default function StudySession({
   }, [started, quiz, finished]);
   function begin() {
     setDeck(
-      shuffle(material.cards).slice(
+      shuffle(quiz && material.terms ? termQuiz(material.terms) : material.cards).slice(
         0,
         quiz || flash ? material.cards.length : count,
       ),

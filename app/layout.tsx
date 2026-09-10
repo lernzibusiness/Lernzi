@@ -4,6 +4,7 @@ import "./globals.css";
 import "./refinements.css";
 import "./light.css";
 import "./figures.css";
+import "./terms.css";
 export const metadata: Metadata = {
   title: "Lernzi · Make room for learning",
   description:

@@ -1,7 +1,9 @@
 "use client";
 import { useRef, useState } from "react";
 import { ArrowRight, UploadCloud, Sparkles, ShieldCheck } from "lucide-react";
-import { parseCards, type Material } from "@/lib/study";
+import { type Material } from "@/lib/study";
+import { extractTerms, termsToCards, type StudyTerm } from "@/lib/terms";
+import TermReview from "./term-review";
 import { PageHeading } from "./page-heading";
 import { readStudyFile } from "@/lib/read-study-file";
 export default function Upload({
@@ -18,7 +20,8 @@ export default function Upload({
   const [drag, setDrag] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const reading = useRef(false);
-  const cards = parseCards(text);
+  const [source,setSource]=useState("Pasted notes");
+  const [suggestions,setSuggestions]=useState<StudyTerm[] | null>(null);
   async function read(file?: File) {
     if (!file || reading.current || disabled) return;
     reading.current = true;
@@ -28,6 +31,8 @@ export default function Upload({
       const content = await readStudyFile(file);
       setText(content);
       setTitle(file.name.replace(/\.[^.]+$/, "").slice(0, 100));
+      setSource(file.name);
+      setSuggestions(extractTerms(content,file.name));
     } catch (e) {
       setError(
         e instanceof Error
@@ -52,18 +57,9 @@ export default function Upload({
       setError("Keep your notes under 500,000 characters.");
       return;
     }
-    if (text.split(/\r?\n/).filter((l) => l.includes("::")).length > 300) {
-      setError("Use no more than 300 question-and-answer lines per material.");
-      return;
-    }
-    onAdd({
-      id: crypto.randomUUID(),
-      title: title.trim(),
-      text,
-      cards,
-      createdAt: new Date().toISOString(),
-    });
+    setSuggestions(extractTerms(text,source));
   }
+  if(suggestions) return <TermReview initial={suggestions} source={source} disabled={disabled} onBack={()=>setSuggestions(null)} onSave={terms=>onAdd({id:crypto.randomUUID(),title:title.trim(),text,terms,sourceFile:source,cards:termsToCards(terms),createdAt:new Date().toISOString()})}/>;
   return (
     <>
       <PageHeading
@@ -138,7 +134,7 @@ export default function Upload({
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder={
-                "Paste your notes here.\n\nTo create cards, use one pair per line:\nWhat is active recall? :: Retrieving information from memory."
+                "Paste your notes here.\n\nActive recall means retrieving information from memory.\n\nLernzi will suggest terms for you to review."
               }
             />
           </label>
@@ -149,14 +145,14 @@ export default function Upload({
           )}
           <div className="section-heading">
             <span className="subtle">
-              {cards.length} cards found · Review before saving
+              Find terms → Review → Learn
             </span>
             <button
               className="button primary"
               disabled={busy || disabled}
               type="submit"
             >
-              Save material <ArrowRight size={18} />
+              Find study terms <ArrowRight size={18} />
             </button>
           </div>
         </section>
@@ -170,8 +166,8 @@ export default function Upload({
             
           </h2>
           <p>
-            Make a card with a question, two colons, then an answer. Each pair
-            gets its own line.
+            Lernzi looks for definitions, abbreviations and lists. You decide
+            which suggestions to keep before they become study cards.
           </p>
           <div className="example-note">
             What is a cell?
@@ -179,9 +175,8 @@ export default function Upload({
             <span>::</span> The basic unit of life.
           </div>
           <p>
-            PDF text is extracted on your device. Scanned PDFs need selectable
-            text first. Plain notes are saved as notes; automatic question
-            generation and Word reading are coming later.
+            PDF text is extracted on your device. Scanned PDFs need OCR first.
+            Suggestions may miss concepts or need corrections. You can always add terms manually.
           </p>
           <div className="aside-privacy">
             <ShieldCheck size={22} />
@@ -191,13 +186,6 @@ export default function Upload({
               Nothing is sent to an AI service.
             </p>
           </div>
-          {cards.length > 0 && (
-            <details open>
-              <summary>Preview your first card</summary>
-              <strong>{cards[0].question}</strong>
-              <p>{cards[0].answer}</p>
-            </details>
-          )}
         </aside>
       </form>
     </>

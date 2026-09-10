@@ -6,6 +6,7 @@ const routes: Record<string, string> = {
   settings: "Settings",
   materials: "Study materials",
   upload: "Add material",
+  review: "Review study terms",
   flashcards: "Flashcards",
   "self-test": "Self-Test",
   quiz: "15-Min Quiz",

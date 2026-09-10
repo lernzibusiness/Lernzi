@@ -1,0 +1,24 @@
+.term-review-toolbar,.term-row-heading,.term-review-actions,.term-controls { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.term-review-toolbar { margin-bottom:24px; }
+.term-review-list { display:grid; gap:16px; }
+.term-review-row { padding:24px; min-width:0; }
+.term-select { display:flex; align-items:center; gap:14px; flex:1; min-width:0; margin:0; }
+.term-select strong { overflow-wrap:anywhere; }
+.term-select input { width:22px; height:22px; margin:0; flex-shrink:0; accent-color:#1E3A8A; }
+.term-review-row p { margin:10px 0; overflow-wrap:anywhere; white-space:pre-wrap; }
+.term-components { color:#1E3A8A; font-size:.875rem; }
+.term-editor { border-top:1px solid var(--line); padding-top:20px; margin-top:20px; }
+.term-editor label { margin:0 0 18px; display:block; }
+.term-editor input,.term-editor textarea { display:block; width:100%; margin-top:8px; }
+.term-source { margin-top:18px; font-size:.875rem; }
+.term-source summary { cursor:pointer; color:#1E3A8A; padding:8px 0; }
+.term-source blockquote { white-space:pre-wrap; overflow-wrap:anywhere; margin:12px 0; padding:12px 16px; border-left:2px solid #06B6D4; background:#E2E8F0; }
+.term-review-actions { justify-content:flex-start; margin:28px 0; }
+.term-empty { padding:28px; }
+.term-empty p { margin-top:16px; }
+.term-controls { margin:28px 0; justify-content:flex-start; }
+.term-mark { justify-content:center; }
+.revealed-answer p { white-space:pre-wrap; overflow-wrap:anywhere; }
+.term-progress { padding:24px; margin-bottom:24px; }
+.term-progress p { margin-top:12px; }
+@media(max-width:650px) { .term-review-row { padding:18px; } .term-select { flex-basis:100%; } .term-row-heading { gap:10px; } .term-controls .button { flex:1; } .term-review-actions .button { width:100%; } .term-review-toolbar .actions { gap:24px; } }

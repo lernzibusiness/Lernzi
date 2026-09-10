@@ -27,6 +27,9 @@ import {
 } from "lucide-react";
 import Brand from "./brand";
 import Landing from "./landing";
+import TermReview from "./term-review";
+import TermLearner from "./term-learner";
+import { extractTerms, termsToCards } from "@/lib/terms";
 import { PageHeading } from "./page-heading";
 import Upload from "./upload";
 import StudySession from "./study-session";
@@ -380,6 +383,7 @@ export default function Lernzi() {
                               <summary>View source notes</summary>
                               <pre>{m.text}</pre>
                             </details>
+                            <Link className="text-button" href={`/review?material=${encodeURIComponent(m.id)}`}>{m.terms ? "Review / edit study terms" : "Find study terms"}</Link>
                           </article>
                         ))}
                     </div>
@@ -408,6 +412,11 @@ export default function Lernzi() {
                 </>
               ) : path === "/upload" ? (
                 <Upload onAdd={add} disabled={storageFailed} />
+              ) : path === "/review" && material ? (
+                <TermReview key={material.id} initial={material.terms || extractTerms(material.text,material.sourceFile || material.title)} source={material.sourceFile || material.title} onSave={terms=>{
+                  const latest=readStudy();
+                  if(update({...latest,materials:latest.materials.map(m=>m.id===material.id?{...m,terms,cards:termsToCards(terms)}:m)})) router.push(`/flashcards?material=${encodeURIComponent(material.id)}`);
+                }}/>
               ) : ["/flashcards", "/self-test", "/quiz"].includes(path) ? (
                 <>
                   <PageHeading
@@ -445,7 +454,10 @@ export default function Lernzi() {
                           ))}
                         </select>
                       </label>
-                      <StudySession
+                      {path === "/flashcards" && material.terms?.some(t=>t.approved) ? <TermLearner key={material.id} material={material} onMark={(id,status)=>{
+                        const latest=readStudy();
+                        return update({...latest,materials:latest.materials.map(m=>m.id===material.id?{...m,terms:m.terms?.map(t=>t.id===id?{...t,status}:t)}:m)});
+                      }}/> : <StudySession
                         key={`${path}-${material.id}`}
                         mode={path}
                         material={material}
@@ -456,7 +468,7 @@ export default function Lernzi() {
                             results: [...latest.results, r],
                           });
                         }}
-                      />
+                      />}
                     </>
                   ) : (
                     <Empty
@@ -473,6 +485,7 @@ export default function Lernzi() {
                     title="Study progress"
                     text="An honest look at the practice you’ve put in."
                   />
+                  {state.materials.some(m=>m.terms?.some(t=>t.approved)) && <section className="panel term-progress"><h2>Study terms</h2>{state.materials.filter(m=>m.terms?.some(t=>t.approved)).map(m=><p key={m.id}><Link href={`/flashcards?material=${encodeURIComponent(m.id)}`}>{m.title}</Link> · {m.terms!.filter(t=>t.approved && t.status==="known").length} known · {m.terms!.filter(t=>t.approved && t.status==="learning").length} learning · {m.terms!.filter(t=>t.approved && t.status==="unseen").length} unseen</p>)}</section>}
                   <div className="progress-summary">
                     <div>
                       <span className="eyebrow">CARDS PRACTISED</span>

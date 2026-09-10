@@ -1,4 +1,5 @@
-export type Card = { id: string; question: string; answer: string };
+import type { StudyTerm } from "./terms.ts";
+export type Card = { id: string; question: string; answer: string; termId?: string };
 export type Material = {
   id: string;
   title: string;
@@ -6,6 +7,8 @@ export type Material = {
   text: string;
   cards: Card[];
   sample?: boolean;
+  terms?: StudyTerm[];
+  sourceFile?: string;
 };
 export type Result = {
   id: string;
@@ -82,6 +85,14 @@ export function isStudyState(value: unknown): value is StudyState {
         typeof m.createdAt === "string" &&
         Array.isArray(m.cards) &&
         m.cards.length <= 300 &&
+        (m.sourceFile === undefined || typeof m.sourceFile === "string") &&
+        (m.terms === undefined || (Array.isArray(m.terms) && m.terms.length <= 300 && m.terms.every(t=>
+          !!t && typeof t.id === "string" && typeof t.term === "string" && t.term.length<=120 &&
+          typeof t.definition === "string" && t.definition.length<=4000 && Array.isArray(t.components) && t.components.length<=30 && t.components.every(s=>typeof s==="string" && s.length<=12000) &&
+          typeof t.approved==="boolean" && typeof t.editedByUser==="boolean" && ["unseen","learning","known"].includes(t.status) &&
+          ["definition","components","abbreviation","question"].includes(t.kind) && !!t.source && typeof t.source.file==="string" && typeof t.source.snippet==="string" &&
+          (t.source.section===undefined || typeof t.source.section==="string")
+        ))) &&
         m.cards.every(
           (c) =>
             !!c &&
