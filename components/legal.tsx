@@ -14,6 +14,7 @@ const privacy: Section[] = [
     paragraphs: [
       "This first version works locally in your browser. It stores the notes you choose to add, question-and-answer cards, material titles, creation dates and completed study-session results. It does not retain your original files. No account service, cloud file storage, payment provider, analytics tool or advertising tracker is connected. The account forms do not send or save what you enter.",
       "Your browser stores your study data on this device. It is not automatically synchronised or backed up. The application does not send your study content to an AI service. Hosting infrastructure may receive ordinary requests, IP addresses, browser details, timestamps and security logs when serving the site. The actual hosting provider and log retention must be documented before public launch.",
+      "Optional local AI downloads Qwen3 model files from Hugging Face and MLC’s GitHub hosting when you request it. Those hosts receive ordinary download requests, including your IP address; Lernzi does not include your study text in them. Text processing runs on your device. Suggested terms, source excerpts and learning status are saved locally with your study material after review.",
     ],
   },
   {
@@ -80,7 +81,8 @@ const cookies: Section[] = [
     title: "2. Storage used in this version",
     paragraphs: [
       "Necessary preference storage: Lernzi places lernzi.consent.v1 in localStorage to remember your optional-category choices and the date of your choice. The app asks again after approximately 180 days. This first-party entry is not sent to a third party by the application.",
-      "Requested study storage: Lernzi places lernzi.study.v1 in localStorage when you add study material or complete a session. It contains notes, card pairs, material metadata and completed results. It remains until you delete the data or clear browser storage. It is used only to provide the local study feature you request; the app does not send it to third parties.",
+      "Requested study storage: Lernzi places lernzi.study.v1 in localStorage when you add study material or complete a session. It contains notes, study terms, card pairs, learning status, material metadata and completed results. It remains until you delete the data or clear browser storage. It is used only to provide the local study feature you request; the app does not send it to third parties.",
+      "Optional model storage: requesting local AI allows WebLLM to cache downloaded model files in browser Cache Storage. The cache can be reused on later visits, but browsers may evict it. Use Remove downloaded model in Add material to remove this model’s files, or clear the site’s browser storage. Removing model files does not remove saved study materials.",
       "App preview: a temporary sessionStorage marker remembers that you continued through the login or sign-up screen. It is not an account or authentication token; names, email addresses and passwords from these screens are not stored or sent. Exit app preview clears the marker. Public application files are cached for offline use; study material remains in the existing local library.",
       "Authentication cookies: none are configured in this version. If an authentication service is added, its cookie names, provider, purpose, recipients and duration must be added here before activation. Hosting and security infrastructure must also be audited before public launch, and any storage it sets must be documented.",
     ],

@@ -6,6 +6,7 @@ import { extractTerms, termsToCards, type StudyTerm } from "@/lib/terms";
 import TermReview from "./term-review";
 import { PageHeading } from "./page-heading";
 import { readStudyFile } from "@/lib/read-study-file";
+import LocalTermAI from "./local-term-ai";
 export default function Upload({
   onAdd,
   disabled,
@@ -17,6 +18,7 @@ export default function Upload({
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [aiBusy, setAiBusy] = useState(false);
   const [drag, setDrag] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const reading = useRef(false);
@@ -32,7 +34,7 @@ export default function Upload({
       setText(content);
       setTitle(file.name.replace(/\.[^.]+$/, "").slice(0, 100));
       setSource(file.name);
-      setSuggestions(extractTerms(content,file.name));
+      // Keep extracted text visible so the student can choose AI or quick extraction.
     } catch (e) {
       setError(
         e instanceof Error
@@ -47,7 +49,7 @@ export default function Upload({
   }
   function submit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (reading.current || disabled) return;
+    if (reading.current || aiBusy || disabled) return;
     if (!title.trim()) { setError('Give your material a title.'); return; }
     if (!text.trim()) {
       setError("Add some notes first.");
@@ -71,27 +73,27 @@ export default function Upload({
         <section className="panel">
           <div
             role="button"
-            tabIndex={busy || disabled ? -1 : 0}
-            aria-disabled={busy || disabled}
+            tabIndex={busy || aiBusy || disabled ? -1 : 0}
+            aria-disabled={busy || aiBusy || disabled}
             aria-busy={busy}
             aria-label="Choose a PDF, text or Markdown file"
             className={`dropzone ${drag ? "dragging" : ""}`}
-            onClick={() => { if (!reading.current && !disabled) input.current?.click(); }}
+            onClick={() => { if (!reading.current && !aiBusy && !disabled) input.current?.click(); }}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                if (!reading.current && !disabled) input.current?.click();
+                if (!reading.current && !aiBusy && !disabled) input.current?.click();
               }
             }}
             onDragOver={(e) => {
               e.preventDefault();
-              if (!reading.current && !disabled) setDrag(true);
+              if (!reading.current && !aiBusy && !disabled) setDrag(true);
             }}
             onDragLeave={() => setDrag(false)}
             onDrop={(e) => {
               e.preventDefault();
               setDrag(false);
-              void read(e.dataTransfer.files[0]);
+              if(!aiBusy) void read(e.dataTransfer.files[0]);
             }}
           >
             <span className="upload-icon">
@@ -107,7 +109,7 @@ export default function Upload({
             ref={input}
             type="file"
             accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown"
-            disabled={busy || disabled}
+            disabled={busy || aiBusy || disabled}
             hidden
             onChange={(e) => void read(e.target.files?.[0])}
           />
@@ -117,7 +119,7 @@ export default function Upload({
           <label>
             Material title
             <input
-              disabled={busy}
+              disabled={busy || aiBusy}
               required
               maxLength={100}
               value={title}
@@ -128,7 +130,7 @@ export default function Upload({
           <label>
             Your notes
             <textarea
-              disabled={busy}
+              disabled={busy || aiBusy}
               required
               rows={8}
               value={text}
@@ -143,16 +145,17 @@ export default function Upload({
               {error}
             </p>
           )}
+          <LocalTermAI text={text} source={source} disabled={busy || disabled} onBusy={setAiBusy} onTerms={terms=>{if(!title.trim())setTitle("Study notes");setSuggestions(terms);}}/>
           <div className="section-heading">
             <span className="subtle">
               Find terms → Review → Learn
             </span>
             <button
               className="button primary"
-              disabled={busy || disabled}
+              disabled={busy || aiBusy || disabled}
               type="submit"
             >
-              Find study terms <ArrowRight size={18} />
+              Quick extraction (no model) <ArrowRight size={18} />
             </button>
           </div>
         </section>

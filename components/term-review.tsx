@@ -45,6 +45,6 @@ export default function TermReview({ initial, source, onSave, onBack, disabled=f
     {error && <p role="alert" className="form-error">{error}</p>}
     <div className="term-review-actions"><button className="button secondary" onClick={add}><Plus size={18}/> Add term</button><button className="button primary" disabled={disabled} onClick={save}>Save study terms ({count})</button></div>
     {onBack && <button className="text-button" onClick={onBack}><ArrowLeft size={16}/> Back to notes (discard this review)</button>}
-    <p className="subtle">Suggestions use local text patterns, not AI understanding. Only selected terms become study cards.</p>
+    <p className="subtle">Suggestions are generated locally and may need corrections. Check each source. Only selected terms become study cards.</p>
   </>;
 }

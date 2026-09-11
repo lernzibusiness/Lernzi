@@ -21,4 +21,9 @@
 .revealed-answer p { white-space:pre-wrap; overflow-wrap:anywhere; }
 .term-progress { padding:24px; margin-bottom:24px; }
 .term-progress p { margin-top:12px; }
+.local-ai { margin:24px 0; padding:24px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.local-ai h2 { font-size:1.25rem; }
+.local-ai p { margin:12px 0; }
+.local-ai .actions { flex-wrap:wrap; }
+.local-ai-status { overflow-wrap:anywhere; font-size:.875rem; }
 @media(max-width:650px) { .term-review-row { padding:18px; } .term-select { flex-basis:100%; } .term-row-heading { gap:10px; } .term-controls .button { flex:1; } .term-review-actions .button { width:100%; } .term-review-toolbar .actions { gap:24px; } }
