@@ -1,0 +1,20 @@
+.landing-account-actions { display:flex; align-items:center; gap:20px; }
+.preview-loading { min-height:100dvh; display:grid; place-items:center; padding:24px; }
+.pwa-bar { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; border:1px solid var(--line); border-radius:16px; padding:16px 20px; margin-bottom:28px; background:#F8FAFC; }
+.pwa-bar>div:first-child { display:flex; flex-direction:column; gap:4px; }
+.pwa-bar span { display:flex; align-items:center; gap:6px; color:var(--primary-blue); font-size:.875rem; }
+.pwa-actions { display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
+.pwa-help { width:100%; font-size:.875rem; margin:0; }
+.auth-main .availability-note { align-items:flex-start; line-height:1.6; }
+.auth-main .availability-note svg { flex-shrink:0; margin-top:3px; }
+.skip-link:not(:focus) { visibility:hidden; }
+@media(display-mode:standalone) { .app-shell { padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); } }
+@media(max-width:650px) {
+  .landing-account-actions { gap:12px; }
+  .landing-account-actions>.text-button { font-size:.875rem; white-space:nowrap; }
+  .landing-nav { flex-wrap:wrap; gap:16px; }
+  .pwa-bar { padding:16px; align-items:flex-start; }
+  .pwa-actions { width:100%; }
+  .mode-grid .mode-card .mode-icon { position:static; margin:0 0 16px; }
+  .auth-main .auth-form-wrap { padding:28px 20px; border:1px solid var(--line); border-radius:20px; }
+}

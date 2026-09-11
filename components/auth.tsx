@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { beginPreview, safeNextPath } from "@/lib/preview-session";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -13,6 +15,9 @@ import Brand from "./brand";
 export default function Auth({ path }: { path: string }) {
   const signup = path === "/signup",
     reset = path === "/forgot-password";
+  const router = useRouter();
+  const [next, setNext] = useState("/dashboard");
+  useEffect(() => { setNext(safeNextPath(new URLSearchParams(window.location.search).get("next"))); setMessage(""); }, [path]);
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   function submit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -22,13 +27,12 @@ export default function Auth({ path }: { path: string }) {
       setMessage("Your passwords don’t match. Please check them.");
       return;
     }
-    setMessage(
-      reset
-        ? "Password reset isn’t connected yet. No email has been sent."
-        : signup
-          ? "Accounts are not available yet. Your details have not been sent or saved."
-          : "Sign-in isn’t connected yet. You can explore the local study space below.",
-    );
+    if (reset) { setMessage("Password reset will be available when accounts are connected. No email has been sent."); return; }
+    try {
+      beginPreview();
+      e.currentTarget.reset();
+      router.push(next);
+    } catch { setMessage("Your browser blocked temporary storage. Allow site storage to open the app preview."); }
   }
   return (
     <div className="auth-layout">
@@ -56,7 +60,7 @@ export default function Auth({ path }: { path: string }) {
       </aside>
       <main id="main" className="auth-main">
         <Link className="text-button back-link" href="/">
-          <ArrowLeft size={16} /> Back to your study space
+          <ArrowLeft size={16} /> Back to the website
         </Link>
         <div className="auth-form-wrap">
           <span className="eyebrow">
@@ -75,7 +79,7 @@ export default function Auth({ path }: { path: string }) {
           </h1>
           <p>
             {reset
-              ? "Enter your email to request a reset when accounts become available."
+              ? "Account recovery is not connected in this preview."
               : signup
                 ? "Save your place and keep your study material together."
                 : "Pick up your learning, right where you left it."}
@@ -83,8 +87,8 @@ export default function Auth({ path }: { path: string }) {
           <div className="availability-note">
             <ShieldCheck size={18} />
             <span>
-              Accounts are coming later. Explore Lernzi locally today; these
-              forms don’t send or store your details.
+              Account-screen preview. Use example details: they are not sent or saved.
+              Continuing opens the local app without creating an account.
             </span>
           </div>
           <form onSubmit={submit}>
@@ -150,7 +154,7 @@ export default function Auth({ path }: { path: string }) {
                     />
                   </label>
                 ) : (
-                  <Link href="/forgot-password" className="forgot-link">
+                  <Link href={`/forgot-password?next=${encodeURIComponent(next)}`} className="forgot-link">
                     Forgot password?
                   </Link>
                 )}
@@ -158,8 +162,8 @@ export default function Auth({ path }: { path: string }) {
             )}
             {signup && (
               <p className="legal-agreement">
-                By creating an account, you agree to the{" "}
-                <Link href="/terms">Terms of Service</Link> and acknowledge the{" "}
+                This is an account-screen preview. Read the{" "}
+                <Link href="/terms">Terms of Service</Link> and{" "}
                 <Link href="/privacy">Privacy Policy</Link>. See our{" "}
                 <Link href="/cookies">Cookie Policy</Link>.
               </p>
@@ -173,27 +177,25 @@ export default function Auth({ path }: { path: string }) {
               {reset
                 ? "Request password reset"
                 : signup
-                  ? "Create account"
-                  : "Log in"}
+                  ? "Continue to app preview"
+                  : "Continue to app preview"}
               <ArrowRight size={18} />
             </button>
           </form>
           <p className="auth-switch">
             {reset ? (
-              <Link href="/login">Back to log in</Link>
+              <Link href={`/login?next=${encodeURIComponent(next)}`}>Back to log in</Link>
             ) : signup ? (
               <>
-                Already have an account? <Link href="/login">Log in</Link>
+                Already have an account? <Link href={`/login?next=${encodeURIComponent(next)}`}>Log in</Link>
               </>
             ) : (
               <>
-                New to Lernzi? <Link href="/signup">Create an account</Link>
+                New to Lernzi? <Link href={`/signup?next=${encodeURIComponent(next)}`}>Create an account</Link>
               </>
             )}
           </p>
-          <Link href="/dashboard" className="button secondary full-width">
-            Explore without an account <ArrowRight size={18} />
-          </Link>
+
         </div>
         <footer className="auth-footer">
           <Link href="/privacy">Privacy Policy</Link>

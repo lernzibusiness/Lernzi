@@ -1,0 +1,82 @@
+import { test, expect, type Page } from "@playwright/test";
+
+async function continuePreview(page: Page, signup = false) {
+  if (signup) await page.getByRole("textbox", { name: "Name", exact: true }).fill("Preview Student");
+  await page.getByRole("textbox", { name: "Email address", exact: true }).fill("preview.student@example.com");
+  await page.locator('input[name="password"]').fill("example-only-12345");
+  if (signup) await page.locator('input[name="confirm"]').fill("example-only-12345");
+  await page.getByRole("button", { name: "Continue to app preview" }).click();
+}
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("lernzi.consent.v1", JSON.stringify({ version: 1, analytics: false, marketing: false, updatedAt: new Date().toISOString() })));
+});
+test("website → signup screen → installable app, no account credentials stored", async ({ page, request }) => {
+  const errors: string[] = [], submissions: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  page.on("request", request => { if (request.method() === "POST") submissions.push(request.url()); });
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Learn Everyday." })).toBeVisible();
+  await page.getByRole("link", { name: "Get Started" }).first().click();
+  await expect(page).toHaveURL(/\/signup/);
+  await expect(page.getByText(/Account-screen preview/)).toBeVisible();
+  await continuePreview(page, true);
+  await expect(page).toHaveURL(/\/dashboard/);
+  await expect(page.getByRole("heading", { name: "Welcome back!" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Install Lernzi" })).toBeVisible();
+  const manifest = await (await request.get("/manifest.webmanifest")).json();
+  expect(manifest.display).toBe("standalone");
+  expect(manifest.start_url).toBe("/dashboard");
+  expect(manifest.icons.some((icon: { purpose: string }) => icon.purpose === "maskable")).toBe(true);
+  for (const icon of manifest.icons) expect((await request.get(icon.src)).status()).toBe(200);
+  await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller)), { timeout: 60_000 }).toBe(true);
+  await expect(page.getByText("Ready for offline study", { exact: true })).toBeVisible();
+  const storage = await page.evaluate(() => JSON.stringify({ local: { ...localStorage }, session: { ...sessionStorage } }));
+  expect(storage).not.toContain("example-only");
+  expect(storage).not.toContain("preview.student");
+  expect(storage).not.toContain("Preview Student");
+  expect(submissions).toEqual([]);
+  await page.getByRole("button", { name: "Exit app preview" }).click();
+  await expect(page).toHaveURL(/\/login/);
+  await page.goto("/upload");
+  await expect(page).toHaveURL(/\/login\?next=/);
+  await continuePreview(page);
+  await expect(page).toHaveURL(/\/upload/);
+  expect(errors).toEqual([]);
+});
+test("offline app opens saved materials and navigates after reloading", async ({ page, context }) => {
+  await page.goto("/login"); await continuePreview(page);
+  await expect(page.getByText("Ready for offline study", { exact: true })).toBeVisible({ timeout: 60_000 });
+  await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
+  await page.evaluate(() => localStorage.setItem("lernzi.study.v1", JSON.stringify({ version: 1, materials: [{ id: "offline-notes", title: "Offline biology", text: "What is recall? :: Retrieving knowledge.", createdAt: new Date().toISOString(), cards: [{ id: "recall", question: "What is recall?", answer: "Retrieving knowledge." }] }], results: [] })));
+  await context.setOffline(true);
+  await page.goto("/materials");
+  await expect(page.getByRole("heading", { name: "Offline biology" })).toBeVisible();
+  await expect(page.getByText(/Offline · your local library/)).toBeVisible();
+  await page.getByRole("link", { name: "Flashcards", exact: true }).click();
+  await page.getByRole("button", { name: "Start flashcards" }).click();
+  await page.locator(".flashcard").click();
+  await expect(page.locator(".flashcard")).toHaveClass(/is-flipped/);
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Start flashcards" })).toBeVisible();
+  await context.setOffline(false);
+});
+test("mobile landing, signup validation, login and install instructions", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: "test-results/landing-mobile.png", fullPage: true });
+  await page.getByRole("link", { name: "Get Started" }).first().click();
+  await page.getByRole("textbox", { name: "Name", exact: true }).fill("Preview");
+  await page.getByRole("textbox", { name: "Email address", exact: true }).fill("test@example.com");
+  await page.locator('input[name="password"]').fill("preview-password-123");
+  await page.locator('input[name="confirm"]').fill("different-password-123");
+  await page.getByRole("button", { name: "Continue to app preview" }).click();
+  await expect(page.getByText("Your passwords don’t match. Please check them.")).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: "test-results/signup-mobile.png", fullPage: true });
+  await page.getByRole("link", { name: "Log in", exact: true }).click();
+  await continuePreview(page);
+  await expect(page.getByRole("heading", { name: "Welcome back!" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: "test-results/app-mobile.png", fullPage: true });
+});

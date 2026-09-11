@@ -26,6 +26,8 @@ import {
   X,
 } from "lucide-react";
 import Brand from "./brand";
+import PwaRuntime from "./pwa-runtime";
+import { endPreview } from "@/lib/preview-session";
 import Landing from "./landing";
 import TermReview from "./term-review";
 import TermLearner from "./term-learner";
@@ -209,7 +211,7 @@ export default function Lernzi() {
                 </Link>
               ))}
             </nav>
-            <div className="sidebar-bottom"><Link href="/settings" className="nav-link">Settings</Link><button className="nav-link" disabled title="No account is signed in">Log out · unavailable</button>
+            <div className="sidebar-bottom"><Link href="/settings" className="nav-link">Settings</Link><button className="nav-link" onClick={() => { endPreview(); window.location.assign("/login"); }}>Exit app preview</button>
               <div className="local-note">
                 <ShieldCheck size={20} />
                 <div>
@@ -222,7 +224,7 @@ export default function Lernzi() {
                   <GraduationCap size={19} />
                 </span>
                 <div>
-                  Your workspace<small>Sign in when accounts launch</small>
+                  App preview<small>Local study library</small>
                 </div>
                 <ChevronRight size={16} />
               </Link>
@@ -276,6 +278,7 @@ export default function Lernzi() {
               </div>
             </header>
             <main id="main" className="main-content">
+              <PwaRuntime />
               {notice && (
                 <div className="notice" role="status">
                   <span>{notice}</span>
@@ -302,7 +305,7 @@ export default function Lernzi() {
                   <section className="section"><div className="section-heading"><h2>Your study tools</h2></div><div className="mode-grid">{[...modes,{href:"/progress",label:"Progress",description:"See your practice over time.",icon:TrendingUp}].map(m=><Link className="mode-card" key={m.href} href={material && m.href!=="/progress" ? `${m.href}?material=${encodeURIComponent(material.id)}` : m.href}><span className="mode-icon"><m.icon size={24}/></span><h3>{m.label}</h3><p>{m.description}</p><ArrowRight className="mode-arrow" size={18}/></Link>)}</div></section>
                 </>
               ) : path === "/settings" ? (
-                <><PageHeading eyebrow="YOUR WORKSPACE" title="Settings" text="Your data and preferences, in one place."/><section className="panel settings-panel"><h2>On this device</h2><p>Your study library is saved in this browser. Export a copy to keep it safe.</p><button className="button secondary" onClick={exportData}><ArrowDownToLine size={18}/> Export study data</button><h2>Privacy preferences</h2><p>Review your optional cookie choices at any time.</p><button className="button secondary" onClick={()=>window.dispatchEvent(new Event("lernzi:cookies"))}>Cookie preferences</button><h2>Account</h2><p>Cloud accounts are not connected yet. You are not signed in, so there is no account to log out of.</p><Link href="/login" className="text-button">View account preview <ArrowRight size={16}/></Link></section></>
+                <><PageHeading eyebrow="YOUR WORKSPACE" title="Settings" text="Your data and preferences, in one place."/><section className="panel settings-panel"><h2>On this device</h2><p>Your study library is saved in this browser. Export a copy to keep it safe.</p><button className="button secondary" onClick={exportData}><ArrowDownToLine size={18}/> Export study data</button><h2>Privacy preferences</h2><p>Review your optional cookie choices at any time.</p><button className="button secondary" onClick={()=>window.dispatchEvent(new Event("lernzi:cookies"))}>Cookie preferences</button><h2>Account</h2><p>This is an app preview. Login details are not saved, and no account or cloud backup has been created. Your study library stays in this browser.</p><Link href="/login" className="text-button">View account preview <ArrowRight size={16}/></Link></section></>
               ) : path === "/materials" ? (
                 <>
                   <PageHeading

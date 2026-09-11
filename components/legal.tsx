@@ -81,6 +81,7 @@ const cookies: Section[] = [
     paragraphs: [
       "Necessary preference storage: Lernzi places lernzi.consent.v1 in localStorage to remember your optional-category choices and the date of your choice. The app asks again after approximately 180 days. This first-party entry is not sent to a third party by the application.",
       "Requested study storage: Lernzi places lernzi.study.v1 in localStorage when you add study material or complete a session. It contains notes, card pairs, material metadata and completed results. It remains until you delete the data or clear browser storage. It is used only to provide the local study feature you request; the app does not send it to third parties.",
+      "App preview: a temporary sessionStorage marker remembers that you continued through the login or sign-up screen. It is not an account or authentication token; names, email addresses and passwords from these screens are not stored or sent. Exit app preview clears the marker. Public application files are cached for offline use; study material remains in the existing local library.",
       "Authentication cookies: none are configured in this version. If an authentication service is added, its cookie names, provider, purpose, recipients and duration must be added here before activation. Hosting and security infrastructure must also be audited before public launch, and any storage it sets must be documented.",
     ],
   },
@@ -122,7 +123,7 @@ const terms: Section[] = [
   {
     title: "2. What you can use today",
     paragraphs: [
-      "You can add supported text notes, create cards using explicit question-and-answer pairs, practise with flashcards, mark your own tests, try a timed quiz and view completed-session progress. Sample material is labelled. Accounts, password-reset delivery, PDF/Word extraction, cloud storage and payments are not connected.",
+      "You can import PDF and text notes, review suggested study terms, practise with flashcards, mark your own tests, try a timed quiz and view learning progress. Lernzi can be installed for offline study after its app files have downloaded. Sample material is labelled. The login and sign-up screens are previews; real accounts, password-reset delivery, Word extraction, cloud storage and payments are not connected.",
       "The application is a study aid. You are responsible for checking the accuracy, relevance and completeness of your notes and cards. Practice outcomes and self-marked scores do not guarantee understanding, exam results or coverage of every part of your source material.",
     ],
   },
