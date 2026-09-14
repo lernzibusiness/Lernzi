@@ -8,9 +8,9 @@ import "./terms.css";
 import "./pwa.css";
 import PreviewGate from "@/components/preview-gate";
 export const metadata: Metadata = {
-  title: "Lernzi · Make room for learning",
+  title: "Lernzi · Let your knowledge grow",
   description:
-    "Your study material. A clearer next step. Flashcards, self-tests and focused 15-minute study sessions.",
+    "Plant your notes. Grow your knowledge with flashcards, self-tests and focused 15-minute study sessions.",
   manifest: "/manifest.webmanifest",
   applicationName: "Lernzi",
   appleWebApp: { capable: true, statusBarStyle: "default", title: "Lernzi" },

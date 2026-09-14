@@ -61,7 +61,7 @@ export default function PwaRuntime() {
   }, []);
   if (!isAppRoute(path)) return null;
   return <aside className="pwa-bar" aria-label="Lernzi app status">
-    <div><strong>Lernzi app</strong><span>{offline ? <><WifiOff size={15} /> Offline · your local library is available</> : cached ? "Ready for offline study" : "Your study space, on this device"}</span></div>
+    <div><strong>Lernzi app</strong><span>{offline ? <><WifiOff size={15} /> Offline · your local library is available</> : cached ? "Ready to grow offline" : "Your study garden, on this device"}</span></div>
     <div className="pwa-actions">{waiting && <button className="text-button" onClick={() => { window.dispatchEvent(new Event("lernzi:apply-update")); waiting.postMessage({ type: "SKIP_WAITING" }); }}><RefreshCw size={16} />Update ready · reload app</button>}
       {!standalone && <button className="button secondary small" onClick={async () => {
         if (!install) { setHelp(v => !v); return; }

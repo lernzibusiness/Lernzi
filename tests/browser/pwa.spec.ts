@@ -15,13 +15,13 @@ test("website → signup screen → installable app, no account credentials stor
   page.on("pageerror", error => errors.push(error.message));
   page.on("request", request => { if (request.method() === "POST") submissions.push(request.url()); });
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Learn Everyday." })).toBeVisible();
-  await page.getByRole("link", { name: "Get Started" }).first().click();
+  await expect(page.getByRole("heading", { name: "Let your knowledge grow." })).toBeVisible();
+  await page.getByRole("link", { name: "Start Growing" }).first().click();
   await expect(page).toHaveURL(/\/signup/);
   await expect(page.getByText(/Account-screen preview/)).toBeVisible();
   await continuePreview(page, true);
   await expect(page).toHaveURL(/\/dashboard/);
-  await expect(page.getByRole("heading", { name: "Welcome back!" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Ready to keep growing?" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Install Lernzi" })).toBeVisible();
   const manifest = await (await request.get("/manifest.webmanifest")).json();
   expect(manifest.display).toBe("standalone");
@@ -29,7 +29,7 @@ test("website → signup screen → installable app, no account credentials stor
   expect(manifest.icons.some((icon: { purpose: string }) => icon.purpose === "maskable")).toBe(true);
   for (const icon of manifest.icons) expect((await request.get(icon.src)).status()).toBe(200);
   await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller)), { timeout: 60_000 }).toBe(true);
-  await expect(page.getByText("Ready for offline study", { exact: true })).toBeVisible();
+  await expect(page.getByText("Ready to grow offline", { exact: true })).toBeVisible();
   const storage = await page.evaluate(() => JSON.stringify({ local: { ...localStorage }, session: { ...sessionStorage } }));
   expect(storage).not.toContain("example-only");
   expect(storage).not.toContain("preview.student");
@@ -45,7 +45,7 @@ test("website → signup screen → installable app, no account credentials stor
 });
 test("offline app opens saved materials and navigates after reloading", async ({ page, context }) => {
   await page.goto("/login"); await continuePreview(page);
-  await expect(page.getByText("Ready for offline study", { exact: true })).toBeVisible({ timeout: 60_000 });
+  await expect(page.getByText("Ready to grow offline", { exact: true })).toBeVisible({ timeout: 60_000 });
   await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
   await page.evaluate(() => localStorage.setItem("lernzi.study.v1", JSON.stringify({ version: 1, materials: [{ id: "offline-notes", title: "Offline biology", text: "What is recall? :: Retrieving knowledge.", createdAt: new Date().toISOString(), cards: [{ id: "recall", question: "What is recall?", answer: "Retrieving knowledge." }] }], results: [] })));
   await context.setOffline(true);
@@ -65,7 +65,7 @@ test("mobile landing, signup validation, login and install instructions", async 
   await page.goto("/");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: "test-results/landing-mobile.png", fullPage: true });
-  await page.getByRole("link", { name: "Get Started" }).first().click();
+  await page.getByRole("link", { name: "Start Growing" }).first().click();
   await page.getByRole("textbox", { name: "Name", exact: true }).fill("Preview");
   await page.getByRole("textbox", { name: "Email address", exact: true }).fill("test@example.com");
   await page.locator('input[name="password"]').fill("preview-password-123");
@@ -76,7 +76,7 @@ test("mobile landing, signup validation, login and install instructions", async 
   await page.screenshot({ path: "test-results/signup-mobile.png", fullPage: true });
   await page.getByRole("link", { name: "Log in", exact: true }).click();
   await continuePreview(page);
-  await expect(page.getByRole("heading", { name: "Welcome back!" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Ready to keep growing?" })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: "test-results/app-mobile.png", fullPage: true });
 });

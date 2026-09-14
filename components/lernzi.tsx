@@ -58,19 +58,19 @@ const modes = [
   {
     href: "/flashcards",
     label: "Flashcards",
-    description: "Recall, reveal, repeat.",
+    description: "Help new knowledge take root.",
     icon: Layers3,
   },
   {
     href: "/self-test",
     label: "Self-Test",
-    description: "Answer in your own words.",
+    description: "See what has taken root in your own words.",
     icon: Target,
   },
   {
     href: "/quiz",
     label: "15-Min Quiz",
-    description: "A timed mix of your cards.",
+    description: "Give your knowledge 15 minutes of care.",
     icon: Clock3,
   },
 ];
@@ -194,7 +194,7 @@ export default function Lernzi() {
                 <GraduationCap size={19} />
               </span>
               <div>
-                Personal workspace<small>Local library</small>
+                My study garden<small>Local library</small>
               </div>
             </div>
             <nav aria-label="Main navigation">
@@ -262,7 +262,7 @@ export default function Lernzi() {
                 <Brand />
               </div>
               <span className="breadcrumb">
-                My workspace <ChevronRight size={14} />{" "}
+                My study garden <ChevronRight size={14} />{" "}
                 <span>
                   {navigation.find((n) => n.href === path)?.label ||
                     (path === "/upload" ? "Add material" : "Lernzi")}
@@ -293,25 +293,25 @@ export default function Lernzi() {
               )}
               {!ready ? (
                 <div className="empty-state">
-                  <span className="eyebrow">YOUR STUDY SPACE</span>
-                  <h1>Getting things ready…</h1>
+                  <span className="eyebrow">YOUR STUDY GARDEN</span>
+                  <h1>Preparing your study garden…</h1>
                 </div>
               ) : path === "/dashboard" ? (
                 <>
-                  <PageHeading eyebrow="YOUR WORKSPACE" title="Welcome back!" text="Ready to keep learning?" />
-                  <section className="upload-focus"><div><span className="eyebrow">UPLOAD NEW MATERIAL</span><h2>Start with your notes.</h2><p>Turn your notes into flashcards, self-tests and more.</p></div><Link href="/upload" className="button primary"><UploadCloud size={20}/> Upload material</Link></section>
-                  <section className="section"><div className="section-heading"><h2>Continue studying</h2>{state.materials.length>1 && <Link href="/materials">See all <ArrowRight size={16}/></Link>}</div>
-                  {material ? <div className="continue-card"><span className="file-icon"><FileText/></span><div><h3>{material.title}</h3><p>{material.cards.length} cards{material.sample ? " · Sample material" : ""}</p>{(()=>{const last=[...state.results].reverse().find(r=>r.materialId===material.id);return last ? <small>Last studied {new Date(last.date).toLocaleDateString("en-GB")} · {last.correct}/{last.total} self-marked correct</small> : <small>Ready for your first session</small>;})()}</div><Link href={`/flashcards?material=${encodeURIComponent(material.id)}`} className="button secondary">Continue <ArrowRight size={18}/></Link></div> : <div className="shelf-empty"><FolderOpen/><div><h3>Your study space starts here.</h3><p>Add your notes above, or explore a sample set.</p></div><button className="text-button" onClick={demo}>Try a sample <ArrowRight size={16}/></button></div>}</section>
-                  <section className="section"><div className="section-heading"><h2>Your study tools</h2></div><div className="mode-grid">{[...modes,{href:"/progress",label:"Progress",description:"See your practice over time.",icon:TrendingUp}].map(m=><Link className="mode-card" key={m.href} href={material && m.href!=="/progress" ? `${m.href}?material=${encodeURIComponent(material.id)}` : m.href}><span className="mode-icon"><m.icon size={24}/></span><h3>{m.label}</h3><p>{m.description}</p><ArrowRight className="mode-arrow" size={18}/></Link>)}</div></section>
+                  <PageHeading eyebrow="YOUR STUDY GARDEN" title="Ready to keep growing?" text="A little practice gives your knowledge stronger roots." />
+                  <section className="upload-focus"><div><span className="eyebrow">PLANT SOMETHING NEW</span><h2>Every note is a seed.</h2><p>Plant your notes and grow your understanding with flashcards and self-tests.</p></div><Link href="/upload" className="button primary"><UploadCloud size={20}/> Upload material</Link></section>
+                  <section className="section"><div className="section-heading"><h2>Keep growing</h2>{state.materials.length>1 && <Link href="/materials">See all <ArrowRight size={16}/></Link>}</div>
+                  {material ? <div className="continue-card"><span className="file-icon"><FileText/></span><div><h3>{material.title}</h3><p>{material.cards.length} cards{material.sample ? " · Sample material" : ""}</p>{(()=>{const last=[...state.results].reverse().find(r=>r.materialId===material.id);return last ? <small>Last studied {new Date(last.date).toLocaleDateString("en-GB")} · {last.correct}/{last.total} self-marked correct</small> : <small>Ready to put down roots</small>;})()}</div><Link href={`/flashcards?material=${encodeURIComponent(material.id)}`} className="button secondary">Continue <ArrowRight size={18}/></Link></div> : <div className="shelf-empty"><FolderOpen/><div><h3>Your study garden starts here.</h3><p>Plant your first notes above, or explore a sample set.</p></div><button className="text-button" onClick={demo}>Try a sample <ArrowRight size={16}/></button></div>}</section>
+                  <section className="section"><div className="section-heading"><h2>Tools to help you grow</h2></div><div className="mode-grid">{[...modes,{href:"/progress",label:"Progress",description:"See your study habits take root.",icon:TrendingUp}].map(m=><Link className="mode-card" key={m.href} href={material && m.href!=="/progress" ? `${m.href}?material=${encodeURIComponent(material.id)}` : m.href}><span className="mode-icon"><m.icon size={24}/></span><h3>{m.label}</h3><p>{m.description}</p><ArrowRight className="mode-arrow" size={18}/></Link>)}</div></section>
                 </>
               ) : path === "/settings" ? (
-                <><PageHeading eyebrow="YOUR WORKSPACE" title="Settings" text="Your data and preferences, in one place."/><section className="panel settings-panel"><h2>On this device</h2><p>Your study library is saved in this browser. Export a copy to keep it safe.</p><button className="button secondary" onClick={exportData}><ArrowDownToLine size={18}/> Export study data</button><h2>Privacy preferences</h2><p>Review your optional cookie choices at any time.</p><button className="button secondary" onClick={()=>window.dispatchEvent(new Event("lernzi:cookies"))}>Cookie preferences</button><h2>Account</h2><p>This is an app preview. Login details are not saved, and no account or cloud backup has been created. Your study library stays in this browser.</p><Link href="/login" className="text-button">View account preview <ArrowRight size={16}/></Link></section></>
+                <><PageHeading eyebrow="YOUR STUDY GARDEN" title="Settings" text="Your data and preferences, in one place."/><section className="panel settings-panel"><h2>On this device</h2><p>Your study library is saved in this browser. Export a copy to keep it safe.</p><button className="button secondary" onClick={exportData}><ArrowDownToLine size={18}/> Export study data</button><h2>Privacy preferences</h2><p>Review your optional cookie choices at any time.</p><button className="button secondary" onClick={()=>window.dispatchEvent(new Event("lernzi:cookies"))}>Cookie preferences</button><h2>Account</h2><p>This is an app preview. Login details are not saved, and no account or cloud backup has been created. Your study library stays in this browser.</p><Link href="/login" className="text-button">View account preview <ArrowRight size={16}/></Link></section></>
               ) : path === "/materials" ? (
                 <>
                   <PageHeading
-                    eyebrow="YOUR PERSONAL LIBRARY"
+                    eyebrow="YOUR GROWING COLLECTION"
                     title="Study materials"
-                    text="Your notes, card sets and source material."
+                    text="The seeds of your learning: notes, card sets and source material."
                   />
                   <div className="toolbar">
                     <label className="search">
@@ -333,8 +333,8 @@ export default function Lernzi() {
                   </p>
                   {state.materials.length === 0 ? (
                     <Empty
-                      title="Your library is empty."
-                      text="Add notes or explore a sample to see how Lernzi feels."
+                      title="Your first seeds belong here."
+                      text="Add notes to start your study garden, or explore a sample set."
                       action={demo}
                     />
                   ) : (
@@ -424,7 +424,7 @@ export default function Lernzi() {
                 <>
                   <PageHeading
                     eyebrow={
-                      path === "/quiz" ? "MAKE A LITTLE TIME" : "MAKE IT STICK"
+                      path === "/quiz" ? "A LITTLE TIME TO GROW" : "LET KNOWLEDGE TAKE ROOT"
                     }
                     title={
                       path === "/flashcards"
@@ -435,10 +435,10 @@ export default function Lernzi() {
                     }
                     text={
                       path === "/flashcards"
-                        ? "Recall first. Reveal when you’re ready."
+                        ? "Strengthen your roots: recall first, then reveal the answer."
                         : path === "/self-test"
-                          ? "Put your memory to work, then check your own answer."
-                          : "A fresh shuffle of your cards. A little focus. Real progress."
+                          ? "See what has taken root. Write your answer, then check it yourself."
+                          : "A fresh mix of cards to nurture your knowledge, one answer at a time."
                     }
                   />
                   {material ? (
@@ -475,8 +475,8 @@ export default function Lernzi() {
                     </>
                   ) : (
                     <Empty
-                      title="Give your curiosity something to work with."
-                      text="Add your study material first, or practise with a clearly labelled sample set."
+                      title="Give your curiosity room to grow."
+                      text="Plant your study notes first, or grow familiar with Lernzi using a labelled sample set."
                       action={demo}
                     />
                   )}
@@ -484,16 +484,16 @@ export default function Lernzi() {
               ) : path === "/progress" ? (
                 <>
                   <PageHeading
-                    eyebrow="YOUR LEARNING JOURNEY"
-                    title="Study progress"
-                    text="An honest look at the practice you’ve put in."
+                    eyebrow="FROM SEEDS TO STRONGER ROOTS"
+                    title="Your learning growth"
+                    text="See how you have tended your learning through practice."
                   />
                   {state.materials.some(m=>m.terms?.some(t=>t.approved)) && <section className="panel term-progress"><h2>Study terms</h2>{state.materials.filter(m=>m.terms?.some(t=>t.approved)).map(m=><p key={m.id}><Link href={`/flashcards?material=${encodeURIComponent(m.id)}`}>{m.title}</Link> · {m.terms!.filter(t=>t.approved && t.status==="known").length} known · {m.terms!.filter(t=>t.approved && t.status==="learning").length} learning · {m.terms!.filter(t=>t.approved && t.status==="unseen").length} unseen</p>)}</section>}
                   <div className="progress-summary">
                     <div>
                       <span className="eyebrow">CARDS PRACTISED</span>
                       <strong>{completed}</strong>
-                      <p>Every attempt is a step forward.</p>
+                      <p>Every attempt gives your learning a little care.</p>
                     </div>
                     <div>
                       <span className="eyebrow">COMPLETED SESSIONS</span>
@@ -506,9 +506,9 @@ export default function Lernzi() {
                       <Leaf />
                     </span>
                     <div>
-                      <h2>Your last seven days</h2>
+                      <h2>A week of tending your knowledge</h2>
                       <p>
-                        Try one focused session on a day that works for you.
+                        Give your learning time to grow on a day that works for you.
                         These are your last seven calendar days, not a streak to
                         chase.
                       </p>
@@ -578,10 +578,10 @@ export default function Lernzi() {
                       <div className="shelf-empty">
                         <TrendingUp />
                         <div>
-                          <h3>No completed sessions yet.</h3>
+                          <h3>Your growth story starts with one session.</h3>
                           <p>
-                            Complete a session to see it here. No made-up
-                            scores.
+                            Complete a session to record your first practice here.
+                            Grow at your own pace.
                           </p>
                         </div>
                       </div>
@@ -591,7 +591,7 @@ export default function Lernzi() {
               ) : (
                 <Empty
                   title="That page isn’t here."
-                  text="Return to your workspace to keep learning."
+                  text="Return to your study garden to keep growing."
                 />
               )}
             </main>

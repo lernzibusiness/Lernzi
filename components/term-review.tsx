@@ -32,9 +32,9 @@ export default function TermReview({ initial, source, onSave, onBack, disabled=f
     } catch {setError("Could not save your terms. Your edits are still here; check browser storage and try again.");}
   }
   return <>
-    <PageHeading eyebrow="REVIEW BEFORE LEARNING" title="Review your study terms" text={`${initial.length} suggestions from ${source}. Check the source, edit what needs work, and select what to learn.`}/>
+    <PageHeading eyebrow="CHOOSE WHAT TO GROW" title="Review your study terms" text={`${initial.length} suggestions from ${source}. Check the source, edit what needs work, and choose which ideas to help take root.`}/>
     <div className="term-review-toolbar"><span>{count} selected · {visible.length} terms</span><div className="actions"><button className="text-button" onClick={()=>setTerms(all=>all.map(t=>({...t,approved:true})))}>Select all</button><button className="text-button" onClick={()=>setTerms(all=>all.map(t=>({...t,approved:false})))}>Clear selection</button></div></div>
-    {!visible.length && <section className="panel term-empty"><h2>No clear terms found</h2><p>Try definitions such as “Term means …”, headings with bullet lists, or add your own terms.</p></section>}
+    {!visible.length && <section className="panel term-empty"><h2>Your study garden needs a few seeds</h2><p>No clear terms were found. Plant your own with Add term, or try notes with definitions such as “Term means …” and headings with bullet lists.</p></section>}
     <div className="term-review-list">{visible.map((t,i)=><article className="term-review-row panel" key={t.id}>
       <div className="term-row-heading"><label className="term-select"><input type="checkbox" checked={t.approved} onChange={e=>setTerms(all=>all.map(x=>x.id===t.id?{...x,approved:e.target.checked}:x))} aria-label={`Approve ${t.term || `term ${i+1}`}`}/><strong>{t.term || "New term"}</strong></label><button className="text-button" aria-expanded={openId===t.id} onClick={()=>setOpenId(openId===t.id?"":t.id)}>Edit</button><button className="icon-button" aria-label={`Delete term ${t.term || i+1}`} onClick={()=>setDeleted(ids=>[...ids,t.id])}><Trash2 size={18}/></button></div>
       <p>{t.definition}</p>{t.components.length>0 && <p className="term-components">{t.components.filter(Boolean).join(" · ")}</p>}

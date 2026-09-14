@@ -65,9 +65,9 @@ export default function Upload({
   return (
     <>
       <PageHeading
-        eyebrow="A PLACE FOR YOUR IDEAS"
+        eyebrow="PLANT THE SEEDS OF LEARNING"
         title="Add study material"
-        text="Upload a PDF or text file, or paste your notes below."
+        text="Start growing from your notes: upload a PDF or text file, or paste them below."
       />
       <form onSubmit={submit} className="upload-layout">
         <section className="panel">
@@ -148,7 +148,7 @@ export default function Upload({
           <LocalTermAI text={text} source={source} disabled={busy || disabled} onBusy={setAiBusy} onTerms={terms=>{if(!title.trim())setTitle("Study notes");setSuggestions(terms);}}/>
           <div className="section-heading">
             <span className="subtle">
-              Find terms → Review → Learn
+              Plant notes → Review terms → Grow through practice
             </span>
             <button
               className="button primary"
@@ -164,13 +164,13 @@ export default function Upload({
             <Sparkles />
           </span>
           <h2>
-            Creating your cards
+            From notes to new growth
             <br />
             
           </h2>
           <p>
-            Lernzi looks for definitions, abbreviations and lists. You decide
-            which suggestions to keep before they become study cards.
+            Your notes are the seeds. Lernzi finds definitions, abbreviations
+            and lists; you choose which terms to nurture with study cards.
           </p>
           <div className="example-note">
             What is a cell?

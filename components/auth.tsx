@@ -39,23 +39,23 @@ export default function Auth({ path }: { path: string }) {
       <aside className="auth-story">
         <Brand />
         <div className="auth-story-content">
-          <span className="eyebrow">A CLEARER WAY TO LEARN</span>
+          <span className="eyebrow">ROOM FOR YOUR KNOWLEDGE TO GROW</span>
           <h1>
-            Your notes.
-            <br />Your study space.
+            Plant ideas.
+            <br />Grow understanding.
             <br />
             <span>Lernzi.</span>
           </h1>
           <p>
-            Bring your notes, find your rhythm, and give your next chapter a
-            little room.
+            Bring your notes and plant the seeds of understanding.
+            A little practice helps them take root.
           </p>
           <div className="auth-emblem">
             <Leaf size={66} />
           </div>
         </div>
         <span className="auth-story-footer">
-          Your material. Your pace. Your Lernzi.
+          Your roots. Your pace. Your Lernzi.
         </span>
       </aside>
       <main id="main" className="auth-main">
@@ -65,10 +65,10 @@ export default function Auth({ path }: { path: string }) {
         <div className="auth-form-wrap">
           <span className="eyebrow">
             {reset
-              ? "LET’S FIND YOUR WAY BACK"
+              ? "BACK TO YOUR ROOTS"
               : signup
-                ? "YOUR NEXT CHAPTER"
-                : "WELCOME BACK"}
+                ? "YOUR FIRST SEEDS"
+                : "READY TO GROW AGAIN"}
           </span>
           <h1>
             {reset
@@ -81,8 +81,8 @@ export default function Auth({ path }: { path: string }) {
             {reset
               ? "Account recovery is not connected in this preview."
               : signup
-                ? "Save your place and keep your study material together."
-                : "Pick up your learning, right where you left it."}
+                ? "Explore a place where your study notes can take root."
+                : "Return to your study garden and keep nurturing what you know."}
           </p>
           <div className="availability-note">
             <ShieldCheck size={18} />

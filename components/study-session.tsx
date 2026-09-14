@@ -109,7 +109,7 @@ export default function StudySession({
   if (!material.cards.length)
     return (
       <section className="empty-state panel">
-        <h2>Your notes are here. Now give them a question.</h2>
+        <h2>Your notes are planted. Give them room to grow.</h2>
         <p>
           This material has no question-and-answer pairs yet. Add a new material
           using “Question :: Answer” on each line to create a study set.
@@ -125,7 +125,7 @@ export default function StudySession({
         <span className="empty-symbol">
           <Check size={36} />
         </span>
-        <span className="eyebrow">SESSION COMPLETE</span>
+        <span className="eyebrow">A LITTLE PRACTICE. STRONGER ROOTS.</span>
         <h2>Session results</h2>
         <p>
           You completed {totalCompleted} of {deck.length} cards in this set.
@@ -164,10 +164,10 @@ export default function StudySession({
           </span>
           <h2>
             {quiz
-              ? "Your 15-minute session"
+              ? "15 minutes to nurture your knowledge"
               : flash
-                ? "Practise your cards"
-                : "Test your recall"}
+                ? "Help your knowledge take root"
+                : "See what has taken root"}
           </h2>
           <p>
             {material.title}
@@ -221,10 +221,10 @@ export default function StudySession({
           <span>{quiz ? "15" : flash ? "Aa" : "?"}</span>
           <small>
             {quiz
-              ? "MINUTES OF FOCUS"
+              ? "MINUTES TO GROW"
               : flash
                 ? "THINK · RECALL · GROW"
-                : "CURIOSITY COMES FIRST"}
+                : "CURIOSITY PLANTS THE SEED"}
           </small>
         </div>
       </section>

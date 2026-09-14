@@ -73,8 +73,8 @@ export default function LocalTermAI({text,source,disabled,onTerms,onBusy}:{text:
     finally {if(id===job.current){locked.current=false;setPhase("idle");onBusy(false);}}
   }
   return <section className="local-ai" aria-labelledby="local-ai-title">
-    <h2 id="local-ai-title">Read with local AI</h2>
-    <p>Find terms and definitions with Qwen3, then run a second AI check against your source. Both passes run in your browser. AI checks can still miss mistakes; review the suggestions before learning.</p>
+    <h2 id="local-ai-title">Find seeds of knowledge with local AI</h2>
+    <p>Give your study garden a starting point: find terms and definitions with Qwen3, then run a second AI check against your source. Both passes run in your browser. AI checks can still miss mistakes; review the suggestions before learning.</p>
     <p className="subtle">First use downloads several hundred MB from Hugging Face and MLC’s GitHub hosting. Allow around 2 GB of graphics memory. Model files are cached when browser storage allows; your text stays on this device. Use excerpts up to 24,000 characters.</p>
     <div className="actions">
       {phase==="ready"?<button type="button" className="button primary" disabled={disabled || !text.trim()} onClick={()=>void extract()}>Create terms with AI</button>:!busy && <button type="button" className="button secondary" disabled={disabled} onClick={()=>void load()}>Download / load local AI</button>}
