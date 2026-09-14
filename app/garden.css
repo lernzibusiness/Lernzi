@@ -9,20 +9,27 @@
 .auth-layout { background:radial-gradient(ellipse at 85% 12%,#10B98112,transparent 48%),#E2E8F0; }
 .auth-story { background:transparent; }
 .auth-story-plant { width:clamp(160px,19vw,250px); margin:32px auto 0; filter:drop-shadow(0 14px 12px #1E3A8A0D); }
-.auth-main { background:transparent; min-width:0; }
+.auth-main { background:transparent; min-width:0; perspective:1800px; }
 .auth-main .auth-form-wrap {
   position:relative; isolation:isolate; box-sizing:border-box;
-  width:100%; max-width:520px; padding:42px 38px; margin:24px auto 36px;
-  background:linear-gradient(145deg,#FFFFFF,#F8FAFC 72%);
-  border:1px solid #FFFFFF; border-radius:36px;
-  box-shadow:0 2px 0 #FFFFFF inset,0 -3px 0 #E2E8F0 inset,
-    0 9px 0 -1px #CBD5E1,0 12px 0 -2px #94A3B838,
-    0 24px 45px -16px #1E3A8A38,0 50px 80px -45px #0F172A40;
+  width:100%; max-width:520px; padding:42px 38px; margin:30px auto 48px;
+  background:linear-gradient(135deg,#FFFFFF 35%,#F8FAFC);
+  border:2px solid #FFFFFF; border-radius:44px;
+  box-shadow:0 3px 0 #FFFFFF inset,0 -4px 0 #E2E8F0 inset,
+    1px 3px 0 #E2E8F0,2px 6px 0 #CBD5E1,3px 9px 0 #CBD5E1,
+    4px 12px 0 #94A3B8,5px 15px 0 #94A3B8,
+    10px 28px 30px -12px #1E3A8A38,18px 48px 65px -22px #0F172A45;
 }
-.auth-card-sprout { display:flex; align-items:center; justify-content:center; width:48px; height:48px; margin-bottom:22px; border-radius:17px; color:#10B981; background:#10B9810D; border:1px solid #10B98130; box-shadow:0 3px 0 #10B98115; }
-.auth-main .auth-form-wrap input { border-radius:12px; background:#FFFFFF; box-shadow:inset 0 2px 4px #1E3A8A06; }
-.auth-main .auth-form-wrap .button.primary { border-radius:14px; box-shadow:0 4px 0 #1E3A8A25,0 8px 18px #06B6D418; }
-.auth-main .auth-form-wrap .button.primary:active { box-shadow:0 1px 0 #1E3A8A25; }
+.auth-card-sprout { display:flex; align-items:center; justify-content:center; width:52px; height:52px; margin-bottom:24px; border-radius:18px; color:#10B981; background:linear-gradient(145deg,#FFFFFF,#10B98115); border:1px solid #FFFFFF; box-shadow:0 4px 0 #10B98130,0 9px 14px #1E3A8A12; }
+.auth-main .auth-form-wrap input { border-radius:16px; background:#F8FAFC; box-shadow:inset 0 3px 6px #1E3A8A0D,0 1px 0 #FFFFFF; }
+.auth-main .auth-form-wrap input:focus { background:#FFFFFF; }
+.auth-main .auth-form-wrap .button.primary { border-radius:18px; box-shadow:0 6px 0 #1E3A8A40,0 12px 22px #06B6D425,inset 0 1px 0 #FFFFFF66; }
+.auth-main .auth-form-wrap .button.primary:active { transform:translateY(3px); box-shadow:0 3px 0 #1E3A8A40; }
+/* A small perspective angle makes the panel depth visible; typing stays level. */
+@media(min-width:1001px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .auth-main .auth-form-wrap { transform:rotateY(-4deg) rotateX(1deg); transition:transform 240ms ease-out; }
+  .auth-main .auth-form-wrap:focus-within { transform:rotateY(0) rotateX(0); }
+}
 @media(prefers-reduced-motion:no-preference) {
   .plant-foliage { transform-origin:110px 190px; animation:plant-unfurl 900ms ease-out both; }
   @keyframes plant-unfurl { from { transform:scale(.8) rotate(-5deg); opacity:0; } to { transform:scale(1) rotate(0); opacity:1; } }
@@ -33,7 +40,7 @@
   .hero-preview { margin-bottom:34px; }
   .about-plant { width:96px; margin-top:20px; }
   .page-heading>.growing-plant { width:64px; margin-left:12px; }
-  .auth-main .auth-form-wrap { padding:28px 22px; margin:20px auto 32px; border-radius:28px; }
+  .auth-main .auth-form-wrap { padding:28px 22px; margin:20px auto 40px; border-radius:32px; }
   .auth-card-sprout { width:40px; height:40px; border-radius:14px; margin-bottom:18px; }
 }
 @media(max-width:380px) { .page-heading>.growing-plant { display:none; } }
