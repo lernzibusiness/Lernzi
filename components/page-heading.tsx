@@ -1,3 +1,4 @@
+import GrowingPlant from "./growing-plant";
 export function PageHeading({
   eyebrow,
   title,
@@ -14,6 +15,7 @@ export function PageHeading({
         <h1>{title}</h1>
         <p>{text}</p>
       </div>
+      <GrowingPlant small />
     </div>
   );
 }

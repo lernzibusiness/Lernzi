@@ -12,6 +12,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import Brand from "./brand";
+import GrowingPlant from "./growing-plant";
 export default function Auth({ path }: { path: string }) {
   const signup = path === "/signup",
     reset = path === "/forgot-password";
@@ -50,9 +51,7 @@ export default function Auth({ path }: { path: string }) {
             Bring your notes and plant the seeds of understanding.
             A little practice helps them take root.
           </p>
-          <div className="auth-emblem">
-            <Leaf size={66} />
-          </div>
+          <GrowingPlant className="auth-story-plant" />
         </div>
         <span className="auth-story-footer">
           Your roots. Your pace. Your Lernzi.
@@ -63,6 +62,7 @@ export default function Auth({ path }: { path: string }) {
           <ArrowLeft size={16} /> Back to the website
         </Link>
         <div className="auth-form-wrap">
+          <span className="auth-card-sprout" aria-hidden="true"><Leaf size={25} /></span>
           <span className="eyebrow">
             {reset
               ? "BACK TO YOUR ROOTS"

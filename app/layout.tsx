@@ -6,6 +6,7 @@ import "./light.css";
 import "./figures.css";
 import "./terms.css";
 import "./pwa.css";
+import "./garden.css";
 import PreviewGate from "@/components/preview-gate";
 export const metadata: Metadata = {
   title: "Lernzi · Let your knowledge grow",
